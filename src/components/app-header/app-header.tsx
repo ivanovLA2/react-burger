@@ -4,7 +4,7 @@ import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-devel
 
 function AppHeader() {
   return (
-      <header className={styles.header}>
+      <header className={`${styles.header} pt-4`}>
         <div className={styles.nav}>
           <a href="#" className={`${styles.link} pl-5 pr-5 pt-4 pb-4 mr-2`}>
             <BurgerIcon type="primary"/>

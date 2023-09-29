@@ -8,18 +8,18 @@ import data from "../../utils/data"
 
 class App extends React.Component {
 
-  state = data;
+  state = { storage: data };
 
   render() {
     return (
-        <main className={appStyles.app}>
+        <div className={appStyles.app}>
           <AppHeader/>
-          <div className={appStyles.content}>
-            <BurgerIngredients ingredients={this.state}/>
+          <main className={appStyles.content}>
+            <BurgerIngredients ingredients={this.state.storage}/>
             <div className="ml-5 mr-5"></div>
-            <BurgerConstructor ingredients={this.state}/>
-          </div>
-        </main>
+            <BurgerConstructor ingredients={this.state.storage.filter(e => e.type !== "bun")} bun={this.state.storage.filter(e => e.type === "bun")[0]}/>
+          </main>
+        </div>
     )
   }
 }

@@ -1,11 +1,9 @@
 .header {
     margin: 40px 40px 0 40px;
-    border: 2px solid #4C4CFF;
-    padding: 16px 320px;
     min-height: 88px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     box-sizing: border-box;
     align-items: center;
 }

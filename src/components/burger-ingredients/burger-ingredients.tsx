@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './burger-ingredients.module.css'
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngredientModel from "../burger-ingredient/burger-ingredient-model";
+import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 
 function BurgerIngredients({ingredients}: { ingredients: BurgerIngredientModel[] }) {
@@ -13,7 +13,7 @@ function BurgerIngredients({ingredients}: { ingredients: BurgerIngredientModel[]
           Соберите бургер
         </p>
 
-        <div style={{display: 'flex'}} className="pt-5">
+        <div className={`${styles.tab} pt-5`}>
           <Tab value="one" active={current === 'one'} onClick={setCurrent}>
             Булки
           </Tab>
@@ -39,6 +39,14 @@ function BurgerIngredients({ingredients}: { ingredients: BurgerIngredientModel[]
           </p>
           <div className={styles.ingredients}>
             {ingredients.filter(ingredient => ingredient.type === "sauce")
+                .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={1}/>)}
+          </div>
+
+          <p className="text text_type_main-medium">
+            Начинки
+          </p>
+          <div className={styles.ingredients}>
+            {ingredients.filter(ingredient => ingredient.type === "main")
                 .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={1}/>)}
           </div>
         </div>
