@@ -20,7 +20,7 @@ export default function IngredientDetails(props: Props) {
   return (
       <div className={styles.ingredientDetails}>
         <img src={ingredient.image_large} alt={ingredient.name}/>
-        <p className="text text_type_main-default pt-4">
+        <p className="text text_type_main-medium pt-4">
           {ingredient.name}
         </p>
         <div className={`${styles.ingredientProperties} pb-15 pt-8`}>
