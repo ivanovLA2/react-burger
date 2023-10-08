@@ -7,7 +7,7 @@ type Props = { orderNum: string; };
 export default function OrderDetails(props: Props) {
   const {orderNum} = props;
   return (
-      <div className={`${styles.orderDetails} pb-30`}>
+      <div className={`${styles.orderDetails} pb-30 pt-10`}>
         <p className="text text_type_digits-large">{orderNum}</p>
         <p className="text text_type_main-default pt-8">
           идентификатор заказа

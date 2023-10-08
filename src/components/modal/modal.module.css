@@ -17,3 +17,8 @@
     cursor: pointer;
     background: none;
 }
+
+.closeButton {
+    position: absolute;
+    right: 0;
+}

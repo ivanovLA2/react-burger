@@ -32,7 +32,7 @@ function BurgerConstructor(props: Props) {
         </div>
         <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`}>
           {ingredients.map((value) => {
-                return <div className={styles.constructorElement} key={value._id}>
+                return (<div className={styles.constructorElement} key={value._id}>
                   <DragIcon type="primary"/>
                   <ConstructorElement
                       text={value.name}
@@ -40,7 +40,7 @@ function BurgerConstructor(props: Props) {
                       thumbnail={value.image}
 
                   />
-                </div>
+                </div>)
               }
           )}
         </div>
@@ -64,8 +64,8 @@ function BurgerConstructor(props: Props) {
 
         <div>
           {isModalActive && (
-              <Modal onClose={handleModalClose} title={""} isModalActive={isModalActive}>
-                <OrderDetails orderNum={orderNum}/>
+              <Modal onClose={handleModalClose} title={null}>
+                  <OrderDetails orderNum={orderNum}/>
               </Modal>
           )}
         </div>

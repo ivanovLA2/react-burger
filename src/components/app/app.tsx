@@ -19,15 +19,20 @@ export default function App() {
   useEffect(() => {
     const getProductData = async () => {
       setIsLoading(true);
-      try {
-        const res = await fetch(API_ROOT + INGREDIENTS_API);
-        const data = await res.json();
-        setData(data.data);
-      } catch (e) {
-        setHasError(true);
-      } finally {
-        setIsLoading(false);
-      }
+
+        fetch(API_ROOT + INGREDIENTS_API).then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка ${res.status}`);
+        }).then(res=> {
+          setData(res.data)
+        }).catch(reason => {
+          console.error("Error in getting data", reason)
+          setHasError(true);
+        }).finally(() => {
+          setIsLoading(false);
+        })
     };
 
 
@@ -36,17 +41,17 @@ export default function App() {
 
   const Content = () => {
     if (isLoading) {
-      return <p className={`${appStyles.message} text text_type_main-large`}> Загрузка </p>
+      return (<p className={`${appStyles.message} text text_type_main-large`}> Загрузка </p>)
     } else if (hasError) {
-      return <p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>
+      return (<p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
     } else {
-      return <main className={appStyles.content}>
+      return (<main className={appStyles.content}>
         <BurgerIngredients ingredients={data}/>
         <div className="ml-5 mr-5"></div>
         <BurgerConstructor ingredients={data.filter(e => e.type !== "bun")}
                            bun={data.filter(e => e.type === "bun")[0]}
                            orderNum={orderNum}/>
-      </main>
+      </main>)
     }
   }
 

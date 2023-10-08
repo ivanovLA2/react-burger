@@ -7,14 +7,14 @@ type IngredientPropertyProps = { name: String; value: number };
 export default function IngredientDetails(props: Props) {
   const {ingredient} = props
   const IngredientProperty = (props: IngredientPropertyProps) => {
-    return <div>
+    return (<div>
       <p className="text text_type_main-small text_color_inactive">
         {props.name}
       </p>
       <p className="text text_type_digits-default text_color_inactive">
         {props.value}
       </p>
-    </div>
+    </div>)
 
   }
   return (
