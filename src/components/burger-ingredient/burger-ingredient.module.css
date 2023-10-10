@@ -1,0 +1,15 @@
+.ingredient {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    position: relative;
+    text-align: center;
+    height: 208px;
+}
+
+.price {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

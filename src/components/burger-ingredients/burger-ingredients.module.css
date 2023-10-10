@@ -1,0 +1,27 @@
+.container {
+    width: 600px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredients {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.components {
+    overflow: auto;
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tab {
+    display: flex;
+}

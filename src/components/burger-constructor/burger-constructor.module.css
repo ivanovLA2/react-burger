@@ -1,0 +1,32 @@
+.container {
+    width: 600px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.constructor {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+    height: 100%;
+}
+
+.order {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    height: 54px;
+    align-items: center;
+}
+
+.constructorElement {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.but {
+    padding-left: 50px;
+}
