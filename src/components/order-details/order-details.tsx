@@ -1,14 +1,31 @@
 import styles from './order-details.module.css'
 import React from "react";
 import done from "../../images/done.svg"
+import {useSelector} from "react-redux";
+import {RootState} from "../../index";
+import BurgerConstructorState from "../../utils/burger-constructor-model";
 
-type Props = { orderNum: string; };
+export default function OrderDetails() {
+  const {
+    orderNumber,
+    orderRequest,
+    orderFailed
+  } = useSelector((state: RootState) => state.burgerConstructor as BurgerConstructorState);
 
-export default function OrderDetails(props: Props) {
-  const {orderNum} = props;
   return (
       <div className={`${styles.orderDetails} pb-30 pt-10`}>
-        <p className="text text_type_digits-large">{orderNum}</p>
+        (orderRequest &&
+        <p className="text text_type_main-default pt-8">
+          Загрузка...
+        </p>)
+
+        (orderFailed &&
+        <p className="text text_type_main-default pt-8">
+          Произошла ошибка, попробуйте позже
+        </p>)
+
+        (orderNumber &&
+        <p className="text text_type_digits-large">{orderNumber}</p>
         <p className="text text_type_main-default pt-8">
           идентификатор заказа
         </p>
@@ -19,6 +36,7 @@ export default function OrderDetails(props: Props) {
         <p className="text text_type_main-small text_color_inactive pt-2">
           Дождитесь готовности на орбитальной станции
         </p>
+        )
       </div>
   );
 }
