@@ -5,7 +5,6 @@ export const GET_ITEMS_REQUEST = 'GET_ITEMS_REQUEST';
 export const GET_ITEMS_SUCCESS = 'GET_ITEMS_SUCCESS';
 export const GET_ITEMS_FAILED = 'GET_ITEMS_FAILED';
 export const SET_SELECTED_ITEM = 'SET_SELECTED_ITEM';
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 
 export function getItems() {
   return function (dispatch: (arg0: { type: string; items?: any; }) => void) {

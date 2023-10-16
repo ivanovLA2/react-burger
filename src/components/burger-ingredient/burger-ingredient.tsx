@@ -20,7 +20,7 @@ function BurgerIngredient(props: Props) {
 
   return (
       <div className={styles.ingredient} onClick={() => handleModalOpen(ingredient)} ref={ref}>
-        <Counter count={count} size="default" extraClass="m-1"/>
+        { count > 0 && <Counter count={count} size="default" extraClass="m-1"/> }
         <img src={ingredient.image} className="pl-4" alt={ingredient.name}/>
 
         <div className={styles.price}>

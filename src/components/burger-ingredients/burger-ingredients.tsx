@@ -6,10 +6,11 @@ import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {useDispatch, useSelector} from "react-redux";
-import BurgerConstructorState from "../../utils/burger-constructor-model";
+import BurgerConstructorState from "../../utils/burger-constructor-state";
 import {RootState} from "../../index";
 import {SET_SELECTED_ITEM} from "../../services/actions/burger-consrtuctor";
 import useOnScreen from "../../hook/on-sreen-hook";
+import OrderState from "../../utils/order-state";
 
 function BurgerIngredients() {
   const dispatch = useDispatch();
@@ -18,6 +19,11 @@ function BurgerIngredients() {
     items,
     selectedItem
   } = useSelector((state: RootState) => state.burgerConstructor as BurgerConstructorState);
+
+  const {
+    orderItems,
+  } = useSelector((state: RootState) => state.order as OrderState);
+
   const ingredients = items;
 
   const handleModalOpen = (ingredient: BurgerIngredientModel) => {
@@ -67,7 +73,7 @@ function BurgerIngredients() {
         </p>
         <div className={styles.ingredients}>
           {ingredients.filter(ingredient => ingredient.type === "bun")
-            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={1}
+            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={orderItems.filter(value => value._id === ing._id).length}
                                             handleModalOpen={handleModalOpen}/>)}
         </div>
 
@@ -76,7 +82,7 @@ function BurgerIngredients() {
         </p>
         <div className={styles.ingredients}>
           {ingredients.filter(ingredient => ingredient.type === "sauce")
-            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={1}
+            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={orderItems.filter(value => value._id === ing._id).length}
                                             handleModalOpen={handleModalOpen}/>)}
         </div>
 
@@ -85,7 +91,7 @@ function BurgerIngredients() {
         </p>
         <div className={styles.ingredients}>
           {ingredients.filter(ingredient => ingredient.type === "main")
-            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={1}
+            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={orderItems.filter(value => value._id === ing._id).length}
                                             handleModalOpen={handleModalOpen}/>)}
         </div>
       </div>

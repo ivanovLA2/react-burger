@@ -5,6 +5,11 @@ export const CREATE_ORDER_REQUEST = 'CREATE_ORDER_REQUEST';
 export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
 export const CREATE_ORDER_ERROR = 'CREATE_ORDER_ERROR';
 
+export const ADD_INGREDIENT = 'ADD_INGREDIENT';
+export const CHANGE_POSITION = 'CHANGE_POSITION';
+
+export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT'
+
 export function createOrder(ingredients: string[]) {
   return function (dispatch: (arg0: { type: string; orderNumber?: number; }) => void) {
     dispatch({

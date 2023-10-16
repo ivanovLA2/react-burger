@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/app/app';
-import {applyMiddleware, compose, createStore} from "redux";
+import {applyMiddleware, compose} from "redux";
 import thunk from "redux-thunk";
 import {Provider} from 'react-redux';
 import {rootReducer} from "./services/reducers";
 import {configureStore} from "@reduxjs/toolkit";
-import {initialState} from "./services/reducers/burger-consrtuctor";
+import {initialConstructorState} from "./services/reducers/burger-consrtuctor";
 
 declare global {
   interface Window {
@@ -20,21 +20,21 @@ const enhancer = composeEnhancers(applyMiddleware(thunk));
 
 const store = configureStore({
   reducer: rootReducer,
-  preloadedState: {burgerConstructor: initialState},
+  preloadedState: {burgerConstructor: initialConstructorState},
   enhancers: [enhancer]
 });
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <>
-    <Provider store={store}>
-      <App/>
-    </Provider>
-  </>
+    <>
+      <Provider store={store}>
+        <App/>
+      </Provider>
+    </>
 );
 
 // If you want to start measuring performance in your app, pass a function

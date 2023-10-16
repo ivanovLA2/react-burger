@@ -1,24 +1,33 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-constructor.module.css'
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import {useDispatch, useSelector} from "react-redux";
-import BurgerConstructorState from "../../utils/burger-constructor-model";
 import {AppDispatch, RootState} from "../../index";
-import {createOrder} from "../../services/actions/order";
-import {useDrop} from "react-dnd";
-import {ADD_INGREDIENT} from "../../services/actions/burger-consrtuctor";
+import {ADD_INGREDIENT, CHANGE_POSITION, createOrder, REMOVE_INGREDIENT} from "../../services/actions/order";
+import {useDrag, useDrop, XYCoord} from "react-dnd";
+import OrderState from "../../utils/order-state";
+import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 
+interface DragItem {
+  index: number
+  id: string
+  type: string
+}
 
 function BurgerConstructor() {
   const dispatch: AppDispatch = useDispatch();
+  const ref = useRef<HTMLDivElement>(null)
 
   const {
-    orderItems
-  } = useSelector((state: RootState) => state.burgerConstructor as BurgerConstructorState);
-  const bun = orderItems.filter(value => 'bun' === value.type)[0];
+    orderItems,
+    orderNumber,
+    orderRequest,
+    orderFailed
+  } = useSelector((state: RootState) => state.order as OrderState);
 
+  const bun = orderItems.filter(ingredient => ingredient.type === "bun")[0];
   const [isModalActive, setIsModalActive] = useState(false);
   const handleModalOpen = () => {
     dispatch(createOrder(orderItems.map(item => item._id)));
@@ -28,95 +37,150 @@ function BurgerConstructor() {
     setIsModalActive(false);
   };
 
-  const [{ isHover } , drop] = useDrop({
+  const moveIngredient = (dragIndex: number, hoverIndex: number) => {
+    dispatch({
+      type: CHANGE_POSITION,
+      dragIndex: dragIndex,
+      hoverIndex: hoverIndex,
+    })
+  }
+
+  const [{}, drop] = useDrop({
     accept: "ing",
-    collect: monitor => ({
-      isHover: monitor.isOver(),
-    }),
+    collect: monitor => ({}),
     drop(item) {
       dispatch({
         type: ADD_INGREDIENT,
-        id: item
+        item: item
       });
     },
   });
 
-  console.log("bun", bun)
+  const handleRemove = (id: string) => {
+    dispatch({
+      type: REMOVE_INGREDIENT,
+      id: id
+    });
+  }
+
   return (
-    <div className={styles.container}>
-      <div className={`${styles.but} pr-8 pt-25`}>
-        {bun ? (<ConstructorElement
-            type="top"
-            isLocked={true}
-            text={bun.name + " (верх)"}
-            price={bun.price}
-            thumbnail={bun.image}/>)
-          : (<ConstructorElement
-            type="top"
-            isLocked={true}
-            text={"Перетащите булку"}
-            price={0}
-            thumbnail={''}/>)}
-      </div>
-      <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`} ref={drop}>
-        {orderItems.filter((item) => item.type !== 'bun').length > 0 ?
-          orderItems.map((value) => {
-                return (<div className={styles.constructorElement} key={value._id}>
-                  <DragIcon type="primary"/>
-                  <ConstructorElement
-                    text={value.name}
-                    price={value.price}
-                    thumbnail={value.image}
+      <div className={styles.container} ref={drop}>
+        <div className={`${styles.but} pr-8 pt-25`}>
+          {bun && (<ConstructorElement
+              type="top"
+              isLocked={true}
+              text={bun.name + " (верх)"}
+              price={bun.price}
+              thumbnail={bun.image}/>)}
+        </div>
+        <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`}>
+          {orderItems.filter((item) => item.type !== 'bun').length > 0 ?
+              orderItems.filter((item) => item.type !== 'bun').map((value, index) =>
+                  <IngredientDetails value={value} index={index} key={value._id + index} handleRemove={handleRemove}
+                                     moveIngredient={moveIngredient}/>
+              )
+              : (<p className={`${styles.empty} constructor-element `}>Добавьте ингредиент</p>)}
 
-                  />
-                </div>)
-              }
-          )
-          : (<ConstructorElement
-            text="Добавьте ингредиент"
-            price={0}
-            thumbnail={''}
 
+        </div>
+        <div className={`${styles.but} pr-8 pt-3`}>
+          {bun && (<ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={bun.name + " (низ)"}
+              price={bun.price}
+              thumbnail={bun.image}
+              extraClass={""}
           />)}
+        </div>
+        {orderItems.length > 1 && (<div className={`${styles.order} pt-10 pb-10`}>
+          <p className="text text_type_digits-medium pr-1"> {orderItems.reduce((sum, i) => sum + i.price, bun.price)}</p>
+          <CurrencyIcon type="primary"/>
+          <Button htmlType="button" type="primary" size="medium" extraClass="ml-10 mr-4"
+                  onClick={handleModalOpen}>
+            Оформить заказ
+          </Button>
+        </div>)}
 
 
+        <div>
+          {isModalActive && (
+              <Modal onClose={handleModalClose} title={null}>
+                <OrderDetails orderRequest={orderRequest} orderFailed={orderFailed} orderNumber={orderNumber}/>
+              </Modal>
+          )}
+        </div>
       </div>
-      <div className={`${styles.but} pr-8 pt-3`}>
-        {bun ? (<ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={bun.name + " (низ)"}
-          price={bun.price}
-          thumbnail={bun.image}
-          extraClass={""}
-        />) : (<ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={"Перетащите булку"}
-          price={0}
-          thumbnail={''}
-          extraClass={""}
-        />)}
-      </div>
-      {orderItems.length > 1 && (<div className={`${styles.order} pt-10 pb-10`}>
-        <p className="text text_type_digits-medium pr-1"> {orderItems.reduce((sum, i) => sum + i.price, bun.price)}</p>
-        <CurrencyIcon type="primary"/>
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-10 mr-4"
-                onClick={handleModalOpen}>
-          Оформить заказ
-        </Button>
-      </div>)}
-
-
-      <div>
-        {isModalActive && (
-          <Modal onClose={handleModalClose} title={null}>
-            <OrderDetails/>
-          </Modal>
-        )}
-      </div>
-    </div>
   );
+}
+
+type Props = { value: BurgerIngredientModel; index: number; handleRemove: (id: string) => void, moveIngredient: (dragIndex: number, hoverIndex: number) => void };
+
+function IngredientDetails(props: Props) {
+  const {value, handleRemove, index, moveIngredient} = props
+  const ref = useRef<HTMLDivElement>(null)
+  const [{handlerId}, drop] = useDrop<
+      DragItem,
+      void,
+      { handlerId: any | null }
+  >({
+    accept: 'position',
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      }
+    },
+    hover(item: DragItem, monitor) {
+      if (!ref.current) {
+        return
+      }
+      const dragIndex = item.index
+      const hoverIndex = index
+      if (dragIndex === hoverIndex) {
+        return
+      }
+      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverMiddleY =
+          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      const clientOffset = monitor.getClientOffset()
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return
+      }
+
+      moveIngredient(dragIndex, hoverIndex)
+
+      item.index = hoverIndex
+    },
+  })
+
+  const itemId = value._id;
+
+  const [{isDragging}, drag] = useDrag({
+    type: 'position',
+    item: () => {
+      return {itemId, index}
+    },
+    collect: (monitor: any) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  })
+
+  drag(drop(ref))
+  return (<div className={styles.constructorElement} ref={ref} data-handler-id={handlerId}>
+    <DragIcon type="primary"/>
+    <ConstructorElement
+        text={value.name}
+        price={value.price}
+        thumbnail={value.image}
+        handleClose={() => handleRemove(value._id)}
+    />
+  </div>);
 }
 
 export default BurgerConstructor;
