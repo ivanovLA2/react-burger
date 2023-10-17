@@ -26,7 +26,7 @@ export const orderReducer = (state = initialOrderState, action: { type: any; ord
       };
     }
     case CREATE_ORDER_SUCCESS: {
-      return {...state, orderFailed: false, orderNumber: action.orderNumber, orderRequest: false, orderItems: []};
+      return {...state, orderFailed: false, orderNumber: action.orderNumber, orderRequest: false, orderItems: [], bun: null};
     }
     case CREATE_ORDER_FAILED: {
       return {...state, orderFailed: true, orderRequest: false};
