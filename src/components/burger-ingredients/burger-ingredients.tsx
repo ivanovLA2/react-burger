@@ -26,6 +26,7 @@ function BurgerIngredients() {
 
   const {
     orderItems,
+    bun
   } = useSelector(getOrderState);
 
   const ingredients = items;
@@ -78,7 +79,7 @@ function BurgerIngredients() {
           <div className={styles.ingredients}>
             {ingredients.filter(ingredient => ingredient.type === "bun")
                 .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing}
-                                                count={orderItems.filter(value => value._id === ing._id).length}
+                                                count={bun?._id === ing._id ? 1 : 0}
                                                 handleModalOpen={handleModalOpen}/>)}
           </div>
 
