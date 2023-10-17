@@ -3,7 +3,7 @@ import OrderResponse from "../../utils/order-response";
 
 export const CREATE_ORDER_REQUEST = 'CREATE_ORDER_REQUEST';
 export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
-export const CREATE_ORDER_ERROR = 'CREATE_ORDER_ERROR';
+export const CREATE_ORDER_FAILED = 'CREATE_ORDER_ERROR';
 
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 export const CHANGE_POSITION = 'CHANGE_POSITION';
@@ -30,13 +30,13 @@ export function createOrder(ingredients: string[]) {
 
       } else {
         dispatch({
-          type: CREATE_ORDER_ERROR
+          type: CREATE_ORDER_FAILED
         });
       }
     }).catch(reason => {
       console.error("Error in creating order", reason)
       dispatch({
-        type: CREATE_ORDER_ERROR
+        type: CREATE_ORDER_FAILED
       });
     });
   };

@@ -7,6 +7,7 @@ interface OrderState {
   orderRequest: boolean,
   orderFailed: boolean,
   orderItems: BurgerIngredientModel[],
+  bun: BurgerIngredientModel | null,
 
 }
 

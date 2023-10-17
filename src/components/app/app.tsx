@@ -11,13 +11,15 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 
 
+const getState = (state: RootState) => state.burgerConstructor
+
 export default function App() {
   const dispatch: AppDispatch = useDispatch();
   const {
     items,
     itemsRequest,
     itemsFailed
-  } = useSelector((state: RootState) => state.burgerConstructor);
+  } = useSelector(getState);
   useEffect(
     () => {
       dispatch(getItems());

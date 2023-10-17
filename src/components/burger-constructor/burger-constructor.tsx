@@ -15,23 +15,26 @@ interface DragItem {
   id: string
   type: string
 }
-
+const getOrderState = (state: RootState) => state.order as OrderState
 function BurgerConstructor() {
   const dispatch: AppDispatch = useDispatch();
-  const ref = useRef<HTMLDivElement>(null)
 
   const {
     orderItems,
     orderNumber,
     orderRequest,
-    orderFailed
-  } = useSelector((state: RootState) => state.order as OrderState);
+    orderFailed,
+    bun
+  } = useSelector(getOrderState);
 
-  const bun = orderItems.filter(ingredient => ingredient.type === "bun")[0];
   const [isModalActive, setIsModalActive] = useState(false);
   const handleModalOpen = () => {
-    dispatch(createOrder(orderItems.map(item => item._id)));
-    setIsModalActive(true);
+    if (bun) {
+      let itemsId = orderItems.map(item => item._id);
+      itemsId.push(bun._id)
+      dispatch(createOrder(itemsId));
+      setIsModalActive(true);
+    }
   };
   const handleModalClose = () => {
     setIsModalActive(false);
@@ -74,8 +77,8 @@ function BurgerConstructor() {
               thumbnail={bun.image}/>)}
         </div>
         <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`}>
-          {orderItems.filter((item) => item.type !== 'bun').length > 0 ?
-              orderItems.filter((item) => item.type !== 'bun').map((value, index) =>
+          {orderItems.length > 0 ?
+              orderItems.map((value, index) =>
                   <IngredientDetails value={value} index={index} key={value._id + index} handleRemove={handleRemove}
                                      moveIngredient={moveIngredient}/>
               )
@@ -93,8 +96,8 @@ function BurgerConstructor() {
               extraClass={""}
           />)}
         </div>
-        {orderItems.length > 1 && (<div className={`${styles.order} pt-10 pb-10`}>
-          <p className="text text_type_digits-medium pr-1"> {orderItems.reduce((sum, i) => sum + i.price, bun.price)}</p>
+        {(orderItems.length > 0  && bun) && (<div className={`${styles.order} pt-10 pb-10`}>
+          <p className="text text_type_digits-medium pr-1"> {orderItems.reduce((sum, i) => sum + i.price, bun.price * 2)}</p>
           <CurrencyIcon type="primary"/>
           <Button htmlType="button" type="primary" size="medium" extraClass="ml-10 mr-4"
                   onClick={handleModalOpen}>

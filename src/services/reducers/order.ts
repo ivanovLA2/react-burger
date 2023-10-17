@@ -1,7 +1,7 @@
-import {GET_ITEMS_FAILED} from "../actions/burger-consrtuctor";
 import {
   ADD_INGREDIENT,
   CHANGE_POSITION,
+  CREATE_ORDER_FAILED,
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
   REMOVE_INGREDIENT
@@ -12,7 +12,8 @@ export const initialOrderState: OrderState = {
   orderNumber: null,
   orderRequest: false,
   orderFailed: false,
-  orderItems: []
+  orderItems: [],
+  bun: null
 }
 
 export const orderReducer = (state = initialOrderState, action: { type: any; orderNumber: number; item: any; id: string; hoverIndex: number; dragIndex: number }) => {
@@ -27,15 +28,13 @@ export const orderReducer = (state = initialOrderState, action: { type: any; ord
     case CREATE_ORDER_SUCCESS: {
       return {...state, orderFailed: false, orderNumber: action.orderNumber, orderRequest: false, orderItems: []};
     }
-    case GET_ITEMS_FAILED: {
+    case CREATE_ORDER_FAILED: {
       return {...state, orderFailed: true, orderRequest: false};
     }
     case ADD_INGREDIENT: {
       if (action.item.ingredient.type === "bun") {
-        let items = state.orderItems.filter(value => value.type !== "bun");
-        items.push(action.item.ingredient);
         return {
-          ...state, orderItems: items
+          ...state, bun: action.item.ingredient
         }
       } else {
         return {
@@ -62,8 +61,8 @@ export const orderReducer = (state = initialOrderState, action: { type: any; ord
 
     case CHANGE_POSITION: {
       const items = [...state.orderItems];
-      let burgerIngredientModels = items.splice(action.dragIndex + 1, 1);
-      items.splice(action.hoverIndex + 1, 0, ...burgerIngredientModels)
+      let burgerIngredientModels = items.splice(action.dragIndex, 1);
+      items.splice(action.hoverIndex, 0, ...burgerIngredientModels)
       return {
         ...state, orderItems: items
       }

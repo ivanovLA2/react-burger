@@ -12,17 +12,21 @@ import {SET_SELECTED_ITEM} from "../../services/actions/burger-consrtuctor";
 import useOnScreen from "../../hook/on-sreen-hook";
 import OrderState from "../../utils/order-state";
 
+
+const getOrderState = (state: RootState) => state.order as OrderState
+const getConstructorState = (state: RootState) => state.burgerConstructor as BurgerConstructorState
+
 function BurgerIngredients() {
   const dispatch = useDispatch();
-  const [current, setCurrent] = React.useState('one')
+  const [current, setCurrent] = React.useState('bun')
   const {
     items,
     selectedItem
-  } = useSelector((state: RootState) => state.burgerConstructor as BurgerConstructorState);
+  } = useSelector(getConstructorState);
 
   const {
     orderItems,
-  } = useSelector((state: RootState) => state.order as OrderState);
+  } = useSelector(getOrderState);
 
   const ingredients = items;
 
@@ -41,68 +45,71 @@ function BurgerIngredients() {
 
   const handleScroll = () => {
     if (isBunVisible) {
-      setCurrent('one')
+      setCurrent('bun')
     } else if (isSauceVisible) {
-      setCurrent('two')
+      setCurrent('sauce')
     } else if (isMainVisible) {
-      setCurrent('three')
+      setCurrent('main')
     }
   }
 
   return (
-    <div className={styles.container}>
-      <p className="text text_type_main-large pt-10">
-        Соберите бургер
-      </p>
-
-      <div className={`${styles.tab} pt-5`}>
-        <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-          Булки
-        </Tab>
-        <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-          Соусы
-        </Tab>
-        <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-          Начинки
-        </Tab>
-      </div>
-
-      <div className={`${styles.components} custom-scroll pt-10`} onScroll={handleScroll}>
-        <p className="text text_type_main-medium" ref={bunRef}>
-          Булки
+      <div className={styles.container}>
+        <p className="text text_type_main-large pt-10">
+          Соберите бургер
         </p>
-        <div className={styles.ingredients}>
-          {ingredients.filter(ingredient => ingredient.type === "bun")
-            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={orderItems.filter(value => value._id === ing._id).length}
-                                            handleModalOpen={handleModalOpen}/>)}
+
+        <div className={`${styles.tab} pt-5`}>
+          <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+            Булки
+          </Tab>
+          <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+            Соусы
+          </Tab>
+          <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+            Начинки
+          </Tab>
         </div>
 
-        <p className="text text_type_main-medium" ref={sauceRef}>
-          Соусы
-        </p>
-        <div className={styles.ingredients}>
-          {ingredients.filter(ingredient => ingredient.type === "sauce")
-            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={orderItems.filter(value => value._id === ing._id).length}
-                                            handleModalOpen={handleModalOpen}/>)}
-        </div>
+        <div className={`${styles.components} custom-scroll pt-10`} onScroll={handleScroll}>
+          <p className="text text_type_main-medium" ref={bunRef}>
+            Булки
+          </p>
+          <div className={styles.ingredients}>
+            {ingredients.filter(ingredient => ingredient.type === "bun")
+                .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing}
+                                                count={orderItems.filter(value => value._id === ing._id).length}
+                                                handleModalOpen={handleModalOpen}/>)}
+          </div>
 
-        <p className="text text_type_main-medium" ref={mainRef}>
-          Начинки
-        </p>
-        <div className={styles.ingredients}>
-          {ingredients.filter(ingredient => ingredient.type === "main")
-            .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing} count={orderItems.filter(value => value._id === ing._id).length}
-                                            handleModalOpen={handleModalOpen}/>)}
+          <p className="text text_type_main-medium" ref={sauceRef}>
+            Соусы
+          </p>
+          <div className={styles.ingredients}>
+            {ingredients.filter(ingredient => ingredient.type === "sauce")
+                .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing}
+                                                count={orderItems.filter(value => value._id === ing._id).length}
+                                                handleModalOpen={handleModalOpen}/>)}
+          </div>
+
+          <p className="text text_type_main-medium" ref={mainRef}>
+            Начинки
+          </p>
+          <div className={styles.ingredients}>
+            {ingredients.filter(ingredient => ingredient.type === "main")
+                .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing}
+                                                count={orderItems.filter(value => value._id === ing._id).length}
+                                                handleModalOpen={handleModalOpen}/>)}
+          </div>
+        </div>
+        <div>
+          {selectedItem && (
+              <Modal onClose={handleModalClose} title={"Детали ингредиента"}>
+                <IngredientDetails ingredient={selectedItem}/>
+              </Modal>
+          )}
         </div>
       </div>
-      <div>
-        {selectedItem && (
-          <Modal onClose={handleModalClose} title={"Детали ингредиента"}>
-            <IngredientDetails ingredient={selectedItem}/>
-          </Modal>
-        )}
-      </div>
-    </div>
   );
 }
 
