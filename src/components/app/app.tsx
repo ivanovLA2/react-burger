@@ -1,58 +1,50 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import appStyles from "./app.module.css";
-import BurgerIngredientModel from "../../utils/burger-ingredient-model";
+import {useDispatch, useSelector} from "react-redux";
+import {getItems} from "../../services/actions/burger-consrtuctor";
+import {AppDispatch, RootState} from "../../index";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
-const API_ROOT = 'https://norma.nomoreparties.space/api';
-const INGREDIENTS_API = '/ingredients '
+
+const getState = (state: RootState) => state.burgerConstructor
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [hasError, setHasError] = useState(false)
-  const [data, setData] = useState<BurgerIngredientModel[]>([])
-  const [orderNum, setOrderNum] = useState("034536")
-
-
-  useEffect(() => {
-    const getProductData = async () => {
-      setIsLoading(true);
-
-        fetch(API_ROOT + INGREDIENTS_API).then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка ${res.status}`);
-        }).then(res=> {
-          setData(res.data)
-        }).catch(reason => {
-          console.error("Error in getting data", reason)
-          setHasError(true);
-        }).finally(() => {
-          setIsLoading(false);
-        })
-    };
-
-
-    getProductData();
-  }, [])
+  const dispatch: AppDispatch = useDispatch();
+  const {
+    items,
+    itemsRequest,
+    itemsFailed
+  } = useSelector(getState);
+  useEffect(
+    () => {
+      dispatch(getItems());
+    },
+    []
+  );
 
   const Content = () => {
-    if (isLoading) {
+    if (itemsRequest) {
       return (<p className={`${appStyles.message} text text_type_main-large`}> Загрузка </p>)
-    } else if (hasError) {
-      return (<p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
-    } else {
+    }
+    if (itemsFailed) {
+      return (
+        <p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
+    }
+    if (items.length > 0) {
       return (<main className={appStyles.content}>
-        <BurgerIngredients ingredients={data}/>
-        <div className="ml-5 mr-5"></div>
-        <BurgerConstructor ingredients={data.filter(e => e.type !== "bun")}
-                           bun={data.filter(e => e.type === "bun")[0]}
-                           orderNum={orderNum}/>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients/>
+          <div className="ml-5 mr-5"></div>
+          <BurgerConstructor/>
+        </DndProvider>
       </main>)
     }
+    return null;
   }
 
   return (
