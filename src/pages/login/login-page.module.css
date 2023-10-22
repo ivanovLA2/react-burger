@@ -1,0 +1,11 @@
+.register {
+    height: 430px;
+    width: 480px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.link {
+    color: #4C4CFF;
+}
