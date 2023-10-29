@@ -1,11 +1,25 @@
-import React from "react";
-import BurgerIngredientModel from "../../utils/burger-ingredient-model";
+import React, {useEffect, useState} from "react";
 import styles from "./ingredient-details.module.css"
+import {useParams} from "react-router-dom";
+import {RootState} from "../../index";
+import BurgerConstructorState from "../../utils/burger-constructor-state";
+import {useSelector} from "react-redux";
+import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 
-type Props = { ingredient: BurgerIngredientModel; };
 type IngredientPropertyProps = { name: String; value: number };
-export default function IngredientDetails(props: Props) {
-  const {ingredient} = props
+
+const getConstructorState = (state: RootState) => state.burgerConstructor as BurgerConstructorState
+export default function IngredientDetails() {
+  const {id} = useParams();
+  const [ingredient, setIngredient] = useState<BurgerIngredientModel>()
+  const {
+    items,
+  } = useSelector(getConstructorState);
+
+  useEffect(() => {
+    setIngredient(items.filter(ingredient => ingredient._id === id)[0]);
+  }, [items]);
+
   const IngredientProperty = (props: IngredientPropertyProps) => {
     return (<div>
       <p className="text text_type_main-small text_color_inactive">
@@ -18,7 +32,8 @@ export default function IngredientDetails(props: Props) {
 
   }
   return (
-      <div className={styles.ingredientDetails}>
+    <>
+      {ingredient ? (<div className={styles.ingredientDetails}>
         <img src={ingredient.image_large} alt={ingredient.name}/>
         <p className="text text_type_main-medium pt-4">
           {ingredient.name}
@@ -29,6 +44,8 @@ export default function IngredientDetails(props: Props) {
           <IngredientProperty name="Жиры, г" value={ingredient.fat}/>
           <IngredientProperty name="Углеводы, г" value={ingredient.carbohydrates}/>
         </div>
-      </div>
+      </div>) : (<p className="text text_type_main-medium">Загрузка</p>)}
+    </>
+
   )
 }

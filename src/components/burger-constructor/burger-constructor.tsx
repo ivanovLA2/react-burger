@@ -9,6 +9,7 @@ import {ADD_INGREDIENT, CHANGE_POSITION, createOrder, REMOVE_INGREDIENT} from ".
 import {useDrag, useDrop, XYCoord} from "react-dnd";
 import OrderState from "../../utils/order-state";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
+import {useNavigate} from "react-router-dom";
 
 interface DragItem {
   index: number
@@ -18,6 +19,7 @@ interface DragItem {
 const getOrderState = (state: RootState) => state.order as OrderState
 function BurgerConstructor() {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     orderItems,
@@ -29,12 +31,17 @@ function BurgerConstructor() {
 
   const [isModalActive, setIsModalActive] = useState(false);
   const handleModalOpen = () => {
-    if (bun) {
-      let itemsId = orderItems.map(item => item._id);
-      itemsId.push(bun._id)
-      dispatch(createOrder(itemsId));
-      setIsModalActive(true);
+    if (localStorage.getItem("accessToken")) {
+      if (bun) {
+        let itemsId = orderItems.map(item => item._id);
+        itemsId.push(bun._id)
+        dispatch(createOrder(itemsId));
+        setIsModalActive(true);
+      }
+    } else {
+      navigate("/login")
     }
+
   };
   const handleModalClose = () => {
     setIsModalActive(false);

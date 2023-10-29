@@ -11,18 +11,12 @@ import BurgerConstructor from "../components/burger-constructor/burger-construct
 const getState = (state: RootState) => state.burgerConstructor
 
 export default function BurgerConstructorPage() {
-  const dispatch: AppDispatch = useDispatch();
   const {
     items,
     itemsRequest,
     itemsFailed
   } = useSelector(getState);
-  useEffect(
-      () => {
-        dispatch(getItems());
-      },
-      []
-  );
+
 
   const Content = () => {
     if (itemsRequest) {

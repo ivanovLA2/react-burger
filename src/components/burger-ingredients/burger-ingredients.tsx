@@ -3,25 +3,23 @@ import styles from './burger-ingredients.module.css'
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import BurgerConstructorState from "../../utils/burger-constructor-state";
 import {RootState} from "../../index";
-import {SET_SELECTED_ITEM} from "../../services/actions/burger-consrtuctor";
 import useOnScreen from "../../hook/on-sreen-hook";
 import OrderState from "../../utils/order-state";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 const getOrderState = (state: RootState) => state.order as OrderState
 const getConstructorState = (state: RootState) => state.burgerConstructor as BurgerConstructorState
 
 function BurgerIngredients() {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [current, setCurrent] = React.useState('bun')
   const {
     items,
-    selectedItem
   } = useSelector(getConstructorState);
 
   const {
@@ -32,11 +30,9 @@ function BurgerIngredients() {
   const ingredients = items;
 
   const handleModalOpen = (ingredient: BurgerIngredientModel) => {
-    dispatch({type: SET_SELECTED_ITEM, item: ingredient});
+    navigate("/ingredients/" + ingredient._id, {state: {previousLocation: location}})
   };
-  const handleModalClose = () => {
-    dispatch({type: SET_SELECTED_ITEM, item: null});
-  };
+
   const bunRef = useRef<HTMLDivElement>(null)
   const sauceRef = useRef<HTMLDivElement>(null)
   const mainRef = useRef<HTMLDivElement>(null)
@@ -102,13 +98,6 @@ function BurgerIngredients() {
                                                 count={orderItems.filter(value => value._id === ing._id).length}
                                                 handleModalOpen={handleModalOpen}/>)}
           </div>
-        </div>
-        <div>
-          {selectedItem && (
-              <Modal onClose={handleModalClose} title={"Детали ингредиента"}>
-                <IngredientDetails ingredient={selectedItem}/>
-              </Modal>
-          )}
         </div>
       </div>
   );
