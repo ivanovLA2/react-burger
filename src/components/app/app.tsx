@@ -39,7 +39,7 @@ export default function App() {
       <AppHeader/>
       <div className={appStyles.content}>
         <Routes>
-          <Route path="/*" element={<BurgerConstructorPage/>}/>
+          <Route path="/" element={<BurgerConstructorPage/>}/>
           <Route path="/profile" element={<ProtectedRouteElement children={<ProfilePage/>}/>}/>
           <Route path="/login" element={<NotAuthRouteElement children={<LoginPage/>}/>}/>
           <Route path="/register" element={<NotAuthRouteElement children={<RegisterPage/>}/>}/>
