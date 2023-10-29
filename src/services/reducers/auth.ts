@@ -1,4 +1,10 @@
 import {
+  FORGOT_PASSWORD_FAILED,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  GET_USER_FAILED,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
   LOGIN_FAILED,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -8,9 +14,15 @@ import {
   REGISTER_FAILED,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  RESET_PASSWORD_FAILED,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
   TOKEN_FAILED,
   TOKEN_REQUEST,
   TOKEN_SUCCESS,
+  UPDATE_USER_FAILED,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
 } from "../actions/auth";
 import AuthState from "../../utils/auth-state";
 
@@ -22,10 +34,26 @@ export const initialAuthState: AuthState = {
   logoutRequest: false,
   logoutFailed: false,
   tokenRequest: false,
-  tokenFailed: false
+  tokenFailed: false,
+  forgotRequest: false,
+  forgotFailed: false,
+  resetPasswordFailed: false,
+  resetPasswordRequest: false,
+  email: '',
+  name: '',
+  getUserFailed: false,
+  updateUserRequest: false,
+  getUserRequest: false,
+  updateUserFailed: false
 }
 
-export const authReducer = (state = initialAuthState, action: { type: any; accessesToken: string, refreshToken: string }) => {
+export const authReducer = (state = initialAuthState, action: {
+  type: any;
+  accessToken: string,
+  refreshToken: string,
+  name: string,
+  email: string
+}) => {
   switch (action.type) {
     case LOGIN_REQUEST: {
       return {
@@ -41,7 +69,7 @@ export const authReducer = (state = initialAuthState, action: { type: any; acces
       };
     }
     case LOGIN_SUCCESS: {
-      localStorage.setItem('accessToken', action.accessesToken);
+      localStorage.setItem('accessToken', action.accessToken);
       localStorage.setItem('refreshToken', action.refreshToken);
       return {
         ...state,
@@ -65,7 +93,7 @@ export const authReducer = (state = initialAuthState, action: { type: any; acces
       };
     }
     case REGISTER_SUCCESS: {
-      localStorage.setItem('accessToken', action.accessesToken);
+      localStorage.setItem('accessToken', action.accessToken);
       localStorage.setItem('refreshToken', action.refreshToken);
       return {
         ...state,
@@ -109,18 +137,109 @@ export const authReducer = (state = initialAuthState, action: { type: any; acces
       return {
         ...state,
         tokenRequest: false,
-        tokenFailed: true
+        tokenFailed: false
       };
     }
     case TOKEN_FAILED: {
-      localStorage.setItem('accessToken', action.accessesToken);
+      localStorage.setItem('accessToken', action.accessToken);
       localStorage.setItem('refreshToken', action.refreshToken);
       return {
         ...state,
         tokenRequest: false,
-        tokenFailed: false
+        tokenFailed: true
       };
     }
+
+    case FORGOT_PASSWORD_REQUEST: {
+      return {
+        ...state,
+        forgotRequest: true,
+      };
+    }
+    case FORGOT_PASSWORD_SUCCESS: {
+      localStorage.setItem("forgotSuccess", "true")
+      return {
+        ...state,
+        forgotRequest: false,
+        forgotFailed: false,
+      };
+    }
+    case FORGOT_PASSWORD_FAILED: {
+      return {
+        ...state,
+        forgotFailed: true,
+        forgotRequest: false
+      };
+    }
+
+    case RESET_PASSWORD_REQUEST: {
+      return {
+        ...state,
+        resetPasswordRequest: true,
+      };
+    }
+    case RESET_PASSWORD_SUCCESS: {
+      localStorage.setItem("resetSuccess", "true")
+      return {
+        ...state,
+        resetPasswordRequest: false,
+        resetPasswordFailed: false,
+      };
+    }
+    case RESET_PASSWORD_FAILED: {
+      return {
+        ...state,
+        resetPasswordFailed: true,
+        resetPasswordRequest: false
+      };
+    }
+
+    case GET_USER_REQUEST: {
+      return {
+        ...state,
+        getUserRequest: true,
+      };
+    }
+    case GET_USER_SUCCESS: {
+      return {
+        ...state,
+        getUserRequest: false,
+        getUserFailed: false,
+        name: action.name,
+        email: action.email
+      };
+    }
+    case GET_USER_FAILED: {
+      return {
+        ...state,
+        getUserFailed: true,
+        getUserRequest: false
+      };
+    }
+
+    case UPDATE_USER_REQUEST: {
+      return {
+        ...state,
+        updateUserRequest: true,
+      };
+    }
+    case UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        updateUserRequest: false,
+        updateUserFailed: false,
+        name: action.name,
+        email: action.email
+      };
+    }
+    case UPDATE_USER_FAILED: {
+      return {
+        ...state,
+        updateUserFailed: true,
+        updateUserRequest: false
+      };
+    }
+
 
     default: {
       return state;

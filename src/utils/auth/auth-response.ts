@@ -3,9 +3,3 @@ export default interface AuthResponse {
   accessToken: string,
   refreshToken: string
 }
-
-
-export interface UserInfo {
-  email: string,
-  name: string
-}

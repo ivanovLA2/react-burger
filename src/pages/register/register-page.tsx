@@ -1,13 +1,32 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./register-page.module.css"
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {AppDispatch, RootState} from "../../index";
+import AuthState from "../../utils/auth-state";
+import {useDispatch, useSelector} from "react-redux";
+import {registerUser} from "../../services/actions/auth";
 
+const getAuthState = (state: RootState) => state.auth as AuthState
 
 export default function RegisterPage() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [name, setName] = React.useState('')
+
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {
+    registerRequest,
+    registerFailed,
+  } = useSelector(getAuthState);
+
+  useEffect(() => {
+    if (localStorage.getItem("accessToken"))
+      navigate("/", {replace: true})
+  }, [registerFailed, registerRequest]);
+
   const onChangeEmail = (e: any) => {
     setEmail(e.target.value)
   }
@@ -20,9 +39,25 @@ export default function RegisterPage() {
     setName(e.target.value)
   }
 
+  const onRegister = () => {
+    dispatch(registerUser(email, password, name))
+  }
 
   return (
       <div className={styles.register}>
+
+        {
+          registerRequest && <p className="text text_type_main-medium">
+                Загрузка...
+            </p>
+        }
+
+        {
+          registerFailed && <p className="text text_type_main-medium">
+                Ошибка регистрации. Попробуйте еще раз.
+            </p>
+        }
+
         <p className="text text_type_main-medium">
           Регистрация
         </p>
@@ -54,9 +89,15 @@ export default function RegisterPage() {
             extraClass="pt-6"
         />
 
-        <Button htmlType="button" type="primary" size="medium" extraClass="pt-6">
-          Зарегистрироваться
-        </Button>
+        {
+          (name && email && password) &&
+            <div className="pt-6">
+                <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onRegister}>
+                    Зарегистрироваться
+                </Button>
+            </div>
+        }
+
 
 
         <p className="text text_type_main-small pt-20">

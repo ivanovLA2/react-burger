@@ -2,7 +2,8 @@
     height: 430px;
     width: 480px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 

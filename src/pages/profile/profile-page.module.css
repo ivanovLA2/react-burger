@@ -1,0 +1,4 @@
+.profileContent {
+    display: flex;
+    flex-direction: row;
+}

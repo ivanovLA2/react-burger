@@ -1,5 +1,7 @@
-import {login, logout, register} from "../api";
+import {forgotPassword, getUser, login, logout, refresh, register, resetPassword, updateUser} from "../api";
 import AuthResponse from "../../utils/auth/auth-response";
+import UserRequest from "../../utils/auth/user-request";
+import UserResponse from "../../utils/auth/user-response";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -16,6 +18,22 @@ export const LOGOUT_FAILED = 'LOGOUT_ERROR';
 export const TOKEN_REQUEST = 'TOKEN_REQUEST';
 export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const TOKEN_FAILED = 'TOKEN_ERROR';
+
+export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
+export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
+export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_ERROR';
+
+export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
+export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
+export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_ERROR';
+
+export const GET_USER_REQUEST = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED = 'GET_USER_ERROR';
+
+export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
+export const UPDATE_USER_FAILED = 'UPDATE_USER_ERROR';
 
 
 export function loginUser(email: string, password: string) {
@@ -139,7 +157,7 @@ export function tokenUpdate(refreshToken: string) {
       type: TOKEN_REQUEST
     });
 
-    logout({
+    refresh({
       token: refreshToken
     }).then(res => {
       if (res && res.ok) {
@@ -166,6 +184,158 @@ export function tokenUpdate(refreshToken: string) {
       console.error("Error in update token", reason)
       dispatch({
         type: TOKEN_FAILED
+      });
+    });
+  };
+}
+
+export function forgotUserPassword(email: string) {
+  return function (dispatch: (arg0: { type: string; }) => void) {
+    dispatch({
+      type: FORGOT_PASSWORD_REQUEST
+    });
+
+    forgotPassword({
+      email: email
+    }).then(res => {
+      if (res && res.ok) {
+        let result = res.json() as Promise<AuthResponse>;
+        result.then(r => {
+          if (r.success) {
+            dispatch({
+              type: FORGOT_PASSWORD_SUCCESS,
+            });
+          } else {
+            dispatch({
+              type: FORGOT_PASSWORD_FAILED
+            });
+          }
+        })
+      } else {
+        dispatch({
+          type: FORGOT_PASSWORD_FAILED
+        });
+      }
+    }).catch(reason => {
+      console.error("Error in forgot password", reason)
+      dispatch({
+        type: FORGOT_PASSWORD_FAILED
+      });
+    });
+  };
+}
+
+export function resetUserPassword(token: string, password: string) {
+  return function (dispatch: (arg0: { type: string; }) => void) {
+    dispatch({
+      type: RESET_PASSWORD_REQUEST
+    });
+
+    resetPassword({
+      token: token,
+      password: password
+    }).then(res => {
+      if (res && res.ok) {
+        let result = res.json() as Promise<AuthResponse>;
+        result.then(r => {
+          if (r.success) {
+            dispatch({
+              type: RESET_PASSWORD_SUCCESS,
+            });
+          } else {
+            dispatch({
+              type: RESET_PASSWORD_FAILED
+            });
+          }
+        })
+      } else {
+        dispatch({
+          type: RESET_PASSWORD_FAILED
+        });
+      }
+    }).catch(reason => {
+      console.error("Error in RESET password", reason)
+      dispatch({
+        type: RESET_PASSWORD_FAILED
+      });
+    });
+  };
+}
+
+export function getUserInfo(token: string) {
+  return function (dispatch: (arg0: { type: string; name?: string, email?: string}) => void) {
+    dispatch({
+      type: GET_USER_REQUEST
+    });
+
+    getUser({
+      authorization: token
+    }).then(res => {
+      if (res && res.ok) {
+        let result = res.json() as Promise<UserResponse>;
+        result.then(r => {
+          if (r.success) {
+            dispatch({
+              type: GET_USER_SUCCESS,
+              name: r.user.name,
+              email: r.user.email
+            });
+          } else {
+            dispatch({
+              type: GET_USER_FAILED
+            });
+          }
+        })
+      } else {
+        dispatch({
+          type: GET_USER_FAILED
+        });
+      }
+    }).catch(reason => {
+      console.error("Error in RESET password", reason)
+      dispatch({
+        type: GET_USER_FAILED
+      });
+    });
+  };
+}
+
+export function updateUserInfo(token: string, name: string, email: string, password: string) {
+  return function (dispatch: (arg0: { type: string; name?: string, email?: string}) => void) {
+    dispatch({
+      type: UPDATE_USER_REQUEST
+    });
+
+    updateUser({
+      authorization: token,
+      name: name,
+      password: password,
+      email: email
+    }).then(res => {
+      if (res && res.ok) {
+        let result = res.json() as Promise<UserResponse>;
+        result.then(r => {
+          if (r.success) {
+            dispatch({
+              type: UPDATE_USER_SUCCESS,
+              name: r.user.name,
+              email: r.user.email
+            });
+          } else {
+            dispatch({
+              type: UPDATE_USER_FAILED
+            });
+          }
+        })
+      } else {
+        dispatch({
+          type: UPDATE_USER_FAILED
+        });
+      }
+    }).catch(reason => {
+      console.error("Error in RESET password", reason)
+      dispatch({
+        type: UPDATE_USER_FAILED
       });
     });
   };
