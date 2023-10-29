@@ -16,7 +16,9 @@ interface DragItem {
   id: string
   type: string
 }
+
 const getOrderState = (state: RootState) => state.order as OrderState
+
 function BurgerConstructor() {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -74,65 +76,71 @@ function BurgerConstructor() {
   }
 
   return (
-      <div className={styles.container} ref={drop}>
-        <div className={`${styles.but} pr-8 pt-25`}>
-          {bun && (<ConstructorElement
-              type="top"
-              isLocked={true}
-              text={bun.name + " (верх)"}
-              price={bun.price}
-              thumbnail={bun.image}/>)}
-        </div>
-        <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`}>
-          {orderItems.length > 0 ?
-              orderItems.map((value, index) =>
-                  <IngredientDetails value={value} index={index} key={value._id + index} handleRemove={handleRemove}
-                                     moveIngredient={moveIngredient}/>
-              )
-              : (<p className={`${styles.empty} constructor-element `}>Добавьте ингредиент</p>)}
-
-
-        </div>
-        <div className={`${styles.but} pr-8 pt-3`}>
-          {bun && (<ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={bun.name + " (низ)"}
-              price={bun.price}
-              thumbnail={bun.image}
-              extraClass={""}
-          />)}
-        </div>
-        {(orderItems.length > 0  && bun) && (<div className={`${styles.order} pt-10 pb-10`}>
-          <p className="text text_type_digits-medium pr-1"> {orderItems.reduce((sum, i) => sum + i.price, bun.price * 2)}</p>
-          <CurrencyIcon type="primary"/>
-          <Button htmlType="button" type="primary" size="medium" extraClass="ml-10 mr-4"
-                  onClick={handleModalOpen}>
-            Оформить заказ
-          </Button>
-        </div>)}
-
-
-        <div>
-          {isModalActive && (
-              <Modal onClose={handleModalClose} title={null}>
-                <OrderDetails orderRequest={orderRequest} orderFailed={orderFailed} orderNumber={orderNumber}/>
-              </Modal>
-          )}
-        </div>
+    <div className={styles.container} ref={drop}>
+      <div className={`${styles.but} pr-8 pt-25`}>
+        {bun && (<ConstructorElement
+          type="top"
+          isLocked={true}
+          text={bun.name + " (верх)"}
+          price={bun.price}
+          thumbnail={bun.image}/>)}
       </div>
+      <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`}>
+        {orderItems.length > 0 ?
+          orderItems.map((value, index) =>
+            <IngredientDetails value={value} index={index} key={value._id + index} handleRemove={handleRemove}
+                               moveIngredient={moveIngredient}/>
+          )
+          : (<p className={`${styles.empty} constructor-element `}>Добавьте ингредиент</p>)}
+
+
+      </div>
+      <div className={`${styles.but} pr-8 pt-3`}>
+        {bun && (<ConstructorElement
+          type="bottom"
+          isLocked={true}
+          text={bun.name + " (низ)"}
+          price={bun.price}
+          thumbnail={bun.image}
+          extraClass={""}
+        />)}
+      </div>
+      {(orderItems.length > 0 && bun) && (<div className={`${styles.order} pt-10 pb-10`}>
+        <p
+          className="text text_type_digits-medium pr-1"> {orderItems.reduce((sum, i) => sum + i.price, bun.price * 2)}</p>
+        <CurrencyIcon type="primary"/>
+        <Button htmlType="button" type="primary" size="medium" extraClass="ml-10 mr-4"
+                onClick={handleModalOpen}>
+          Оформить заказ
+        </Button>
+      </div>)}
+
+
+      <div>
+        {isModalActive && (
+          <Modal onClose={handleModalClose} title={null}>
+            <OrderDetails orderRequest={orderRequest} orderFailed={orderFailed} orderNumber={orderNumber}/>
+          </Modal>
+        )}
+      </div>
+    </div>
   );
 }
 
-type Props = { value: BurgerIngredientModel; index: number; handleRemove: (id: string) => void, moveIngredient: (dragIndex: number, hoverIndex: number) => void };
+type Props = {
+  value: BurgerIngredientModel;
+  index: number;
+  handleRemove: (id: string) => void,
+  moveIngredient: (dragIndex: number, hoverIndex: number) => void
+};
 
 function IngredientDetails(props: Props) {
   const {value, handleRemove, index, moveIngredient} = props
   const ref = useRef<HTMLDivElement>(null)
   const [{handlerId}, drop] = useDrop<
-      DragItem,
-      void,
-      { handlerId: any | null }
+    DragItem,
+    void,
+    { handlerId: any | null }
   >({
     accept: 'position',
     collect(monitor) {
@@ -151,7 +159,7 @@ function IngredientDetails(props: Props) {
       }
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
       const hoverMiddleY =
-          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset()
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
 
@@ -185,10 +193,10 @@ function IngredientDetails(props: Props) {
   return (<div className={styles.constructorElement} ref={ref} data-handler-id={handlerId}>
     <DragIcon type="primary"/>
     <ConstructorElement
-        text={value.name}
-        price={value.price}
-        thumbnail={value.image}
-        handleClose={() => handleRemove(value._id)}
+      text={value.name}
+      price={value.price}
+      thumbnail={value.image}
+      handleClose={() => handleRemove(value._id)}
     />
   </div>);
 }

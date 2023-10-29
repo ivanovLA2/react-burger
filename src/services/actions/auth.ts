@@ -1,6 +1,5 @@
 import {forgotPassword, getUser, login, logout, refresh, register, resetPassword, updateUser} from "../api";
 import AuthResponse from "../../utils/auth/auth-response";
-import UserRequest from "../../utils/auth/user-request";
 import UserResponse from "../../utils/auth/user-response";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -263,7 +262,7 @@ export function resetUserPassword(token: string, password: string) {
 }
 
 export function getUserInfo(token: string) {
-  return function (dispatch: (arg0: { type: string; name?: string, email?: string}) => void) {
+  return function (dispatch: (arg0: { type: string; name?: string, email?: string }) => void) {
     dispatch({
       type: GET_USER_REQUEST
     });
@@ -301,7 +300,7 @@ export function getUserInfo(token: string) {
 }
 
 export function updateUserInfo(token: string, name: string, email: string, password: string) {
-  return function (dispatch: (arg0: { type: string; name?: string, email?: string}) => void) {
+  return function (dispatch: (arg0: { type: string; name?: string, email?: string }) => void) {
     dispatch({
       type: UPDATE_USER_REQUEST
     });

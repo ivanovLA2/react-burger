@@ -31,47 +31,47 @@ export default function ForgotPasswordPage() {
     dispatch(forgotUserPassword(email))
   }
 
-  const onChangeEmail = (e : any) => {
+  const onChangeEmail = (e: any) => {
     setEmail(e.target.value)
   }
 
   return (
-      <div className={styles.forgotPassword}>
-        {
-          forgotRequest && <p className="text text_type_main-medium">
-                Загрузка...
-            </p>
-        }
+    <div className={styles.forgotPassword}>
+      {
+        forgotRequest && <p className="text text_type_main-medium">
+              Загрузка...
+          </p>
+      }
 
-        {
-          forgotFailed && <p className="text text_type_main-medium">
-                Ошибка авторизации. Попробуйте еще раз.
-            </p>
-        }
-        <p className="text text_type_main-medium">
-          Восстановление пароля
-        </p>
+      {
+        forgotFailed && <p className="text text_type_main-medium">
+              Ошибка авторизации. Попробуйте еще раз.
+          </p>
+      }
+      <p className="text text_type_main-medium">
+        Восстановление пароля
+      </p>
 
-        <EmailInput
-            onChange={onChangeEmail}
-            value={email}
-            name={'email'}
-            isIcon={false}
-            extraClass="pt-6"
-        />
+      <EmailInput
+        onChange={onChangeEmail}
+        value={email}
+        name={'email'}
+        isIcon={false}
+        extraClass="pt-6"
+      />
 
-        {
-          email && (
-            <div className="pt-6">
-              <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onForgotPassword}>
-                Восстановить
-              </Button>
-            </div>)
-        }
+      {
+        email && (
+          <div className="pt-6">
+            <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onForgotPassword}>
+              Восстановить
+            </Button>
+          </div>)
+      }
 
-        <p className="text text_type_main-small pt-20">
-          Вспомнили пароль? <Link to='/login' className={styles.link}>Войти</Link>
-        </p>
-      </div>
+      <p className="text text_type_main-small pt-20">
+        Вспомнили пароль? <Link to='/login' className={styles.link}>Войти</Link>
+      </p>
+    </div>
   )
 }

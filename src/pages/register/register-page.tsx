@@ -44,65 +44,64 @@ export default function RegisterPage() {
   }
 
   return (
-      <div className={styles.register}>
+    <div className={styles.register}>
 
-        {
-          registerRequest && <p className="text text_type_main-medium">
-                Загрузка...
-            </p>
-        }
+      {
+        registerRequest && <p className="text text_type_main-medium">
+              Загрузка...
+          </p>
+      }
 
-        {
-          registerFailed && <p className="text text_type_main-medium">
-                Ошибка регистрации. Попробуйте еще раз.
-            </p>
-        }
+      {
+        registerFailed && <p className="text text_type_main-medium">
+              Ошибка регистрации. Попробуйте еще раз.
+          </p>
+      }
 
-        <p className="text text_type_main-medium">
-          Регистрация
-        </p>
+      <p className="text text_type_main-medium">
+        Регистрация
+      </p>
 
-        <Input
-            type={'text'}
-            placeholder={'Имя'}
-            onChange={onChangeName}
-            value={name}
-            name={'name'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass="pt-6"
-        />
+      <Input
+        type={'text'}
+        placeholder={'Имя'}
+        onChange={onChangeName}
+        value={name}
+        name={'name'}
+        error={false}
+        errorText={'Ошибка'}
+        size={'default'}
+        extraClass="pt-6"
+      />
 
-        <EmailInput
-            onChange={onChangeEmail}
-            value={email}
-            name={'email'}
-            isIcon={false}
-            extraClass="pt-6"
-        />
+      <EmailInput
+        onChange={onChangeEmail}
+        value={email}
+        name={'email'}
+        isIcon={false}
+        extraClass="pt-6"
+      />
 
-        <PasswordInput
-            onChange={onChangePassword}
-            value={password}
-            name={'password'}
-            extraClass="pt-6"
-        />
+      <PasswordInput
+        onChange={onChangePassword}
+        value={password}
+        name={'password'}
+        extraClass="pt-6"
+      />
 
-        {
-          (name && email && password) &&
-            <div className="pt-6">
-                <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onRegister}>
-                    Зарегистрироваться
-                </Button>
-            </div>
-        }
+      {
+        (name && email && password) &&
+          <div className="pt-6">
+              <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onRegister}>
+                  Зарегистрироваться
+              </Button>
+          </div>
+      }
 
 
-
-        <p className="text text_type_main-small pt-20">
-          Уже зарегистрированы? <Link to='/login' className={styles.link}>Войти</Link>
-        </p>
-      </div>
+      <p className="text text_type_main-small pt-20">
+        Уже зарегистрированы? <Link to='/login' className={styles.link}>Войти</Link>
+      </p>
+    </div>
   )
 }

@@ -38,54 +38,54 @@ export default function LoginPage() {
   }
 
   return (
-      <div className={styles.login}>
-        {
-            loginRequest && <p className="text text_type_main-medium">
-                Загрузка...
-            </p>
-        }
+    <div className={styles.login}>
+      {
+        loginRequest && <p className="text text_type_main-medium">
+              Загрузка...
+          </p>
+      }
 
-        {
-            loginFailed && <p className="text text_type_main-medium">
-                Ошибка авторизации. Попробуйте еще раз.
-            </p>
-        }
-        <p className="text text_type_main-medium">
-          Вход
-        </p>
+      {
+        loginFailed && <p className="text text_type_main-medium">
+              Ошибка авторизации. Попробуйте еще раз.
+          </p>
+      }
+      <p className="text text_type_main-medium">
+        Вход
+      </p>
 
-        <EmailInput
-            onChange={onChangeEmail}
-            value={email}
-            name={'email'}
-            isIcon={false}
-            extraClass="pt-6"
-        />
+      <EmailInput
+        onChange={onChangeEmail}
+        value={email}
+        name={'email'}
+        isIcon={false}
+        extraClass="pt-6"
+      />
 
-        <PasswordInput
-            onChange={onChangePassword}
-            value={password}
-            name={'password'}
-            extraClass="pt-6"
-        />
+      <PasswordInput
+        onChange={onChangePassword}
+        value={password}
+        name={'password'}
+        extraClass="pt-6"
+      />
 
-        {
-            (email && password) &&
-            <div className="pt-6">
-                <Button htmlType="button" type="primary" size="medium" onClick={onLogin}>
-                    Войти
-                </Button>
-            </div>
-        }
+      {
+        (email && password) &&
+          <div className="pt-6">
+              <Button htmlType="button" type="primary" size="medium" onClick={onLogin}>
+                  Войти
+              </Button>
+          </div>
+      }
 
 
-        <p className="text text_type_main-small pt-20">
-          Вы - новый пользователь? <Link to='/register' className={styles.link}>Зарегистрироваться</Link>
-        </p>
+      <p className="text text_type_main-small pt-20">
+        Вы - новый пользователь? <Link to='/register' className={styles.link}>Зарегистрироваться</Link>
+      </p>
 
-        <p className="text text_type_main-small pt-4">
-          Забыли пароль? <Link to='/forgot-password' className={styles.link}>Восстановить пароль</Link>
-        </p>
-      </div>
+      <p className="text text_type_main-small pt-4">
+        Забыли пароль? <Link to='/forgot-password' className={styles.link}>Восстановить пароль</Link>
+      </p>
+    </div>
   )
 }
