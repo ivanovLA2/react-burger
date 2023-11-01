@@ -128,12 +128,15 @@ export const authReducer = (state = initialAuthState, action: {
 
 
     case TOKEN_REQUEST: {
+      localStorage.removeItem('accessToken')
       return {
         ...state,
         tokenRequest: true
       };
     }
     case TOKEN_SUCCESS: {
+      localStorage.setItem('accessToken', action.accessToken);
+      localStorage.setItem('refreshToken', action.refreshToken);
       return {
         ...state,
         tokenRequest: false,
@@ -141,8 +144,7 @@ export const authReducer = (state = initialAuthState, action: {
       };
     }
     case TOKEN_FAILED: {
-      localStorage.setItem('accessToken', action.accessToken);
-      localStorage.setItem('refreshToken', action.refreshToken);
+      localStorage.removeItem('refreshToken');
       return {
         ...state,
         tokenRequest: false,

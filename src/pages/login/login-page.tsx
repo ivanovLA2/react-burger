@@ -54,29 +54,31 @@ export default function LoginPage() {
         Вход
       </p>
 
-      <EmailInput
-        onChange={onChangeEmail}
-        value={email}
-        name={'email'}
-        isIcon={false}
-        extraClass="pt-6"
-      />
+      <form onSubmit={onLogin}>
+        <EmailInput
+          onChange={onChangeEmail}
+          value={email}
+          name={'email'}
+          isIcon={false}
+          extraClass="pt-6"
+        />
 
-      <PasswordInput
-        onChange={onChangePassword}
-        value={password}
-        name={'password'}
-        extraClass="pt-6"
-      />
+        <PasswordInput
+          onChange={onChangePassword}
+          value={password}
+          name={'password'}
+          extraClass="pt-6"
+        />
 
-      {
-        (email && password) &&
-          <div className="pt-6">
-              <Button htmlType="button" type="primary" size="medium" onClick={onLogin}>
-                  Войти
-              </Button>
-          </div>
-      }
+        {
+          (email && password) &&
+            <div className="pt-6">
+                <Button htmlType="submit" type="primary" size="medium">
+                    Войти
+                </Button>
+            </div>
+        }
+      </form>
 
 
       <p className="text text_type_main-small pt-20">

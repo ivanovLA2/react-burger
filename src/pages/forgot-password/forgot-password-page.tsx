@@ -52,23 +52,24 @@ export default function ForgotPasswordPage() {
         Восстановление пароля
       </p>
 
-      <EmailInput
-        onChange={onChangeEmail}
-        value={email}
-        name={'email'}
-        isIcon={false}
-        extraClass="pt-6"
-      />
+      <form onSubmit={onForgotPassword}>
+        <EmailInput
+          onChange={onChangeEmail}
+          value={email}
+          name={'email'}
+          isIcon={false}
+          extraClass="pt-6"
+        />
 
-      {
-        email && (
-          <div className="pt-6">
-            <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onForgotPassword}>
-              Восстановить
-            </Button>
-          </div>)
-      }
-
+        {
+          email && (
+            <div className="pt-6">
+              <Button htmlType="submit" type="primary" size="medium" extraClass="pt-6">
+                Восстановить
+              </Button>
+            </div>)
+        }
+      </form>
       <p className="text text_type_main-small pt-20">
         Вспомнили пароль? <Link to='/login' className={styles.link}>Войти</Link>
       </p>

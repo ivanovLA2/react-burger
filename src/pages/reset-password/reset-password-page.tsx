@@ -58,34 +58,36 @@ export default function ResetPasswordPage() {
         Восстановление пароля
       </p>
 
-      <PasswordInput
-        onChange={onChangePassword}
-        value={password}
-        name={'password'}
-        extraClass="pt-6"
-      />
+      <form onSubmit={onReset}>
+        <PasswordInput
+          onChange={onChangePassword}
+          value={password}
+          name={'password'}
+          extraClass="pt-6"
+        />
 
-      <Input
-        type={'text'}
-        placeholder={'Введите код из письма'}
-        onChange={onChangeCode}
-        value={code}
-        name={'code'}
-        error={false}
-        errorText={'Ошибка'}
-        size={'default'}
-        extraClass="pt-6"
-      />
+        <Input
+          type={'text'}
+          placeholder={'Введите код из письма'}
+          onChange={onChangeCode}
+          value={code}
+          name={'code'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass="pt-6"
+        />
 
 
-      {
-        (password && code) &&
-          <div className="pt-6">
-              <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onReset}>
-                  Сохранить
-              </Button>
-          </div>
-      }
+        {
+          (password && code) &&
+            <div className="pt-6">
+                <Button htmlType="submit" type="primary" size="medium" extraClass="pt-6">
+                    Сохранить
+                </Button>
+            </div>
+        }
+      </form>
 
 
       <p className="text text_type_main-small pt-20">

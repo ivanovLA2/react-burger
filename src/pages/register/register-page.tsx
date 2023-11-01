@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const {
     registerRequest,
     registerFailed,
@@ -62,41 +63,44 @@ export default function RegisterPage() {
         Регистрация
       </p>
 
-      <Input
-        type={'text'}
-        placeholder={'Имя'}
-        onChange={onChangeName}
-        value={name}
-        name={'name'}
-        error={false}
-        errorText={'Ошибка'}
-        size={'default'}
-        extraClass="pt-6"
-      />
+      <form onSubmit={onRegister}>
 
-      <EmailInput
-        onChange={onChangeEmail}
-        value={email}
-        name={'email'}
-        isIcon={false}
-        extraClass="pt-6"
-      />
+        <Input
+          type={'text'}
+          placeholder={'Имя'}
+          onChange={onChangeName}
+          value={name}
+          name={'name'}
+          error={false}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass="pt-6"
+        />
 
-      <PasswordInput
-        onChange={onChangePassword}
-        value={password}
-        name={'password'}
-        extraClass="pt-6"
-      />
+        <EmailInput
+          onChange={onChangeEmail}
+          value={email}
+          name={'email'}
+          isIcon={false}
+          extraClass="pt-6"
+        />
 
-      {
-        (name && email && password) &&
-          <div className="pt-6">
-              <Button htmlType="button" type="primary" size="medium" extraClass="pt-6" onClick={onRegister}>
-                  Зарегистрироваться
-              </Button>
-          </div>
-      }
+        <PasswordInput
+          onChange={onChangePassword}
+          value={password}
+          name={'password'}
+          extraClass="pt-6"
+        />
+
+        {
+          (name && email && password) &&
+            <div className="pt-6">
+                <Button htmlType="submit" type="primary" size="medium" extraClass="pt-6">
+                    Зарегистрироваться
+                </Button>
+            </div>
+        }
+      </form>
 
 
       <p className="text text_type_main-small pt-20">

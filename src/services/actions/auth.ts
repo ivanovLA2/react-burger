@@ -150,44 +150,6 @@ export function logoutUser(refreshToken: string) {
   };
 }
 
-export function tokenUpdate(refreshToken: string) {
-  return function (dispatch: (arg0: { type: string; refreshToken?: string, accessToken?: string }) => void) {
-    dispatch({
-      type: TOKEN_REQUEST
-    });
-
-    refresh({
-      token: refreshToken
-    }).then(res => {
-      if (res && res.ok) {
-        let result = res.json() as Promise<AuthResponse>;
-        result.then(r => {
-          if (r.success) {
-            dispatch({
-              type: TOKEN_SUCCESS,
-              refreshToken: r.refreshToken,
-              accessToken: r.accessToken
-            });
-          } else {
-            dispatch({
-              type: TOKEN_FAILED
-            });
-          }
-        })
-      } else {
-        dispatch({
-          type: TOKEN_FAILED
-        });
-      }
-    }).catch(reason => {
-      console.error("Error in update token", reason)
-      dispatch({
-        type: TOKEN_FAILED
-      });
-    });
-  };
-}
-
 export function forgotUserPassword(email: string) {
   return function (dispatch: (arg0: { type: string; }) => void) {
     dispatch({
@@ -261,16 +223,69 @@ export function resetUserPassword(token: string, password: string) {
   };
 }
 
+function updateToken(dispatch: (arg0: {
+  type: string;
+  name?: string;
+  email?: string;
+  refreshToken?: string;
+  accessToken?: string
+}) => void, refreshToken: string): string | null {
+  debugger
+  dispatch({
+    type: TOKEN_REQUEST
+  });
+
+  refresh({
+    token: refreshToken
+  }).then(res => {
+    if (res && res.ok) {
+      let result = res.json() as Promise<AuthResponse>;
+      result.then(r => {
+        if (r.success) {
+          dispatch({
+            type: TOKEN_SUCCESS,
+            refreshToken: r.refreshToken,
+            accessToken: r.accessToken
+          });
+          return r.accessToken;
+        } else {
+          dispatch({
+            type: TOKEN_FAILED
+          });
+        }
+      })
+    } else {
+      dispatch({
+        type: TOKEN_FAILED
+      });
+    }
+  }).catch(reason => {
+    console.error("Error in update token", reason)
+    dispatch({
+      type: TOKEN_FAILED
+    });
+  });
+  return null;
+}
+
 export function getUserInfo(token: string) {
-  return function (dispatch: (arg0: { type: string; name?: string, email?: string }) => void) {
+  return function (dispatch: (arg0: {
+    type: string;
+    name?: string,
+    email?: string,
+    refreshToken?: string,
+    accessToken?: string
+  }) => void) {
     dispatch({
       type: GET_USER_REQUEST
     });
 
+    const refreshToken = localStorage.getItem("refreshToken");
+
     getUser({
       authorization: token
     }).then(res => {
-      if (res && res.ok) {
+      if (false) {
         let result = res.json() as Promise<UserResponse>;
         result.then(r => {
           if (r.success) {
@@ -285,6 +300,39 @@ export function getUserInfo(token: string) {
             });
           }
         })
+      } else if (true && refreshToken) {
+        const accessToken = updateToken(dispatch, refreshToken);
+        debugger
+        if (accessToken) {
+          getUser({
+            authorization: accessToken
+          }).then(r => {
+            if (res && res.ok) {
+              let result = res.json() as Promise<UserResponse>;
+              result.then(r => {
+                if (r.success) {
+                  dispatch({
+                    type: GET_USER_SUCCESS,
+                    name: r.user.name,
+                    email: r.user.email
+                  });
+                } else {
+                  dispatch({
+                    type: GET_USER_FAILED
+                  });
+                }
+              })
+            } else {
+              dispatch({
+                type: GET_USER_FAILED
+              });
+            }
+          })
+        } else {
+          dispatch({
+            type: GET_USER_FAILED
+          });
+        }
       } else {
         dispatch({
           type: GET_USER_FAILED
@@ -304,6 +352,8 @@ export function updateUserInfo(token: string, name: string, email: string, passw
     dispatch({
       type: UPDATE_USER_REQUEST
     });
+
+    const refreshToken = localStorage.getItem("refreshToken");
 
     updateUser({
       authorization: token,
@@ -326,7 +376,44 @@ export function updateUserInfo(token: string, name: string, email: string, passw
             });
           }
         })
+      } else if (res.status === 403 && refreshToken) {
+        const accessToken = updateToken(dispatch, refreshToken);
+        if (accessToken) {
+          updateUser({
+            authorization: token,
+            name: name,
+            password: password,
+            email: email
+          }).then(r => {
+            if (res && res.ok) {
+              let result = res.json() as Promise<UserResponse>;
+              result.then(r => {
+                if (r.success) {
+                  dispatch({
+                    type: UPDATE_USER_SUCCESS,
+                    name: r.user.name,
+                    email: r.user.email
+                  });
+                } else {
+                  dispatch({
+                    type: UPDATE_USER_FAILED
+                  });
+                }
+              })
+            } else {
+              dispatch({
+                type: UPDATE_USER_FAILED
+              });
+            }
+          })
+        } else {
+          dispatch({
+            type: GET_USER_FAILED
+          });
+        }
       } else {
+
+
         dispatch({
           type: UPDATE_USER_FAILED
         });
