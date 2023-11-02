@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {FormEvent, useEffect} from "react";
 import styles from "./login-page.module.css"
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
@@ -33,7 +33,8 @@ export default function LoginPage() {
     setPassword(e.target.value)
   }
 
-  const onLogin = () => {
+  const onLogin = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     dispatch(loginUser(email, password))
   }
 
@@ -54,7 +55,7 @@ export default function LoginPage() {
         Вход
       </p>
 
-      <form onSubmit={onLogin}>
+      <form onSubmit={(e) => onLogin(e)} className={styles.loginForm}>
         <EmailInput
           onChange={onChangeEmail}
           value={email}

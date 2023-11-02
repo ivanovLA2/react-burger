@@ -223,48 +223,48 @@ export function resetUserPassword(token: string, password: string) {
   };
 }
 
-function updateToken(dispatch: (arg0: {
+async function updateToken(dispatch: (arg0: {
   type: string;
   name?: string;
   email?: string;
   refreshToken?: string;
   accessToken?: string
-}) => void, refreshToken: string): string | null {
-  debugger
+}) => void, refreshToken: string): Promise<string | null> {
   dispatch({
     type: TOKEN_REQUEST
   });
 
-  refresh({
-    token: refreshToken
-  }).then(res => {
+  try {
+    const res = await refresh({
+      token: refreshToken
+    });
+
     if (res && res.ok) {
-      let result = res.json() as Promise<AuthResponse>;
-      result.then(r => {
-        if (r.success) {
-          dispatch({
-            type: TOKEN_SUCCESS,
-            refreshToken: r.refreshToken,
-            accessToken: r.accessToken
-          });
-          return r.accessToken;
-        } else {
-          dispatch({
-            type: TOKEN_FAILED
-          });
-        }
-      })
+      let result = await res.json() as AuthResponse;
+      if (result.success) {
+        dispatch({
+          type: TOKEN_SUCCESS,
+          refreshToken: result.refreshToken,
+          accessToken: result.accessToken
+        });
+        return result.accessToken;
+      } else {
+        dispatch({
+          type: TOKEN_FAILED
+        });
+      }
     } else {
       dispatch({
         type: TOKEN_FAILED
       });
     }
-  }).catch(reason => {
-    console.error("Error in update token", reason)
+  } catch (reason) {
+    console.error("Error in update token", reason);
     dispatch({
       type: TOKEN_FAILED
     });
-  });
+  }
+
   return null;
 }
 
@@ -284,44 +284,41 @@ export function getUserInfo(token: string) {
 
     getUser({
       authorization: token
-    }).then(res => {
+    }).then(async res => {
       if (false) {
-        let result = res.json() as Promise<UserResponse>;
-        result.then(r => {
-          if (r.success) {
+        let result = await res.json() as UserResponse;
+          if (result.success) {
             dispatch({
               type: GET_USER_SUCCESS,
-              name: r.user.name,
-              email: r.user.email
+              name: result.user.name,
+              email: result.user.email
             });
           } else {
             dispatch({
               type: GET_USER_FAILED
             });
           }
-        })
+
       } else if (true && refreshToken) {
-        const accessToken = updateToken(dispatch, refreshToken);
-        debugger
+        const accessToken = await updateToken(dispatch, refreshToken);
         if (accessToken) {
           getUser({
             authorization: accessToken
-          }).then(r => {
+          }).then(async r => {
             if (res && res.ok) {
-              let result = res.json() as Promise<UserResponse>;
-              result.then(r => {
-                if (r.success) {
+              let result = await res.json() as UserResponse;
+
+                if (result.success) {
                   dispatch({
                     type: GET_USER_SUCCESS,
-                    name: r.user.name,
-                    email: r.user.email
+                    name: result.user.name,
+                    email: result.user.email
                   });
                 } else {
                   dispatch({
                     type: GET_USER_FAILED
                   });
                 }
-              })
             } else {
               dispatch({
                 type: GET_USER_FAILED
@@ -339,7 +336,6 @@ export function getUserInfo(token: string) {
         });
       }
     }).catch(reason => {
-      console.error("Error in RESET password", reason)
       dispatch({
         type: GET_USER_FAILED
       });
@@ -360,10 +356,10 @@ export function updateUserInfo(token: string, name: string, email: string, passw
       name: name,
       password: password,
       email: email
-    }).then(res => {
+    }).then(async res => {
       if (res && res.ok) {
         let result = res.json() as Promise<UserResponse>;
-        result.then(r => {
+        result.then(async r => {
           if (r.success) {
             dispatch({
               type: UPDATE_USER_SUCCESS,
@@ -377,7 +373,7 @@ export function updateUserInfo(token: string, name: string, email: string, passw
           }
         })
       } else if (res.status === 403 && refreshToken) {
-        const accessToken = updateToken(dispatch, refreshToken);
+        const accessToken = await updateToken(dispatch, refreshToken);
         if (accessToken) {
           updateUser({
             authorization: token,

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {FormEvent, useEffect} from "react";
 import styles from "./register-page.module.css"
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
@@ -40,7 +40,8 @@ export default function RegisterPage() {
     setName(e.target.value)
   }
 
-  const onRegister = () => {
+  const onRegister = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     dispatch(registerUser(email, password, name))
   }
 
@@ -63,7 +64,7 @@ export default function RegisterPage() {
         Регистрация
       </p>
 
-      <form onSubmit={onRegister}>
+      <form onSubmit={(e) => onRegister(e)} className={styles.registerForm}>
 
         <Input
           type={'text'}

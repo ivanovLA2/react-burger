@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {FormEvent, useEffect} from "react";
 import styles from "./forgot-password-page.module.css"
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
@@ -27,7 +27,8 @@ export default function ForgotPasswordPage() {
     }
   }, [forgotRequest, forgotFailed]);
 
-  const onForgotPassword = () => {
+  const onForgotPassword = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     dispatch(forgotUserPassword(email))
   }
 
@@ -52,7 +53,7 @@ export default function ForgotPasswordPage() {
         Восстановление пароля
       </p>
 
-      <form onSubmit={onForgotPassword}>
+      <form onSubmit={(e) => onForgotPassword(e)} className={styles.forgotPasswordForm}>
         <EmailInput
           onChange={onChangeEmail}
           value={email}

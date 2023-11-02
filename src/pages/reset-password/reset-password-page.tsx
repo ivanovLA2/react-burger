@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {FormEvent, useEffect} from "react";
 import styles from "./reset-password-page.module.css"
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
@@ -37,7 +37,8 @@ export default function ResetPasswordPage() {
     setCode(e.target.value)
   }
 
-  const onReset = () => {
+  const onReset = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     dispatch(resetUserPassword(code, password))
   }
 
@@ -58,7 +59,7 @@ export default function ResetPasswordPage() {
         Восстановление пароля
       </p>
 
-      <form onSubmit={onReset}>
+      <form onSubmit={(e) => onReset(e)} className={styles.resetPasswordForm}>
         <PasswordInput
           onChange={onChangePassword}
           value={password}
