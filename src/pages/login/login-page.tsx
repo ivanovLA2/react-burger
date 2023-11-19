@@ -26,10 +26,10 @@ export default function LoginPage() {
       navigate("/", {replace: true})
   }, [loginRequest, loginFailed]);
 
-  const onChangeEmail = (e: any) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }
-  const onChangePassword = (e: any) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
 

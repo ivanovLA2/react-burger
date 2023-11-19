@@ -29,11 +29,11 @@ export default function ResetPasswordPage() {
     }
   }, [resetPasswordFailed, resetPasswordRequest]);
 
-  const onChangePassword = (e: any) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
 
-  const onChangeCode = (e: any) => {
+  const onChangeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value)
   }
 

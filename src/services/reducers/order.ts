@@ -7,6 +7,7 @@ import {
   REMOVE_INGREDIENT
 } from "../actions/order";
 import OrderState from "../../utils/order-state";
+import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 
 export const initialOrderState: OrderState = {
   orderNumber: null,
@@ -17,9 +18,9 @@ export const initialOrderState: OrderState = {
 }
 
 export const orderReducer = (state = initialOrderState, action: {
-  type: any;
+  type: string;
   orderNumber: number;
-  item: any;
+  item: { ingredient: BurgerIngredientModel };
   id: string;
   hoverIndex: number;
   dragIndex: number
