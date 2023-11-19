@@ -1,25 +1,32 @@
 import React, {useEffect} from 'react';
 
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
+
 import appStyles from "./app.module.css";
-import {useDispatch, useSelector} from "react-redux";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {ProtectedRouteElement} from "../protected-route";
+import BurgerConstructorPage from "../../pages/burger-constructor-page";
+import {NotFound404} from "../../pages/not-found-page";
+import LoginPage from "../../pages/login/login-page";
+import RegisterPage from "../../pages/register/register-page";
+import ForgotPasswordPage from "../../pages/forgot-password/forgot-password-page";
+import ResetPasswordPage from "../../pages/reset-password/reset-password-page";
+import {NotAuthRouteElement} from "../not-authorize-route";
+import ProfilePage from "../../pages/profile/profile-page";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import BurgerIngredientPage from "../../pages/burger-ingredient-page";
 import {getItems} from "../../services/actions/burger-consrtuctor";
-import {AppDispatch, RootState} from "../../index";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import {AppDispatch} from "../../index";
+import {useDispatch} from "react-redux";
 
-
-const getState = (state: RootState) => state.burgerConstructor
 
 export default function App() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const previousLocation = location.state?.previousLocation;
   const dispatch: AppDispatch = useDispatch();
-  const {
-    items,
-    itemsRequest,
-    itemsFailed
-  } = useSelector(getState);
+
   useEffect(
     () => {
       dispatch(getItems());
@@ -27,30 +34,28 @@ export default function App() {
     []
   );
 
-  const Content = () => {
-    if (itemsRequest) {
-      return (<p className={`${appStyles.message} text text_type_main-large`}> Загрузка </p>)
-    }
-    if (itemsFailed) {
-      return (
-        <p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
-    }
-    if (items.length > 0) {
-      return (<main className={appStyles.content}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients/>
-          <div className="ml-5 mr-5"></div>
-          <BurgerConstructor/>
-        </DndProvider>
-      </main>)
-    }
-    return null;
-  }
-
   return (
-      <div className={appStyles.app}>
-        <AppHeader/>
-        <Content/>
+    <div className={appStyles.app}>
+      <AppHeader/>
+      <div className={appStyles.content}>
+        <Routes>
+          <Route path="/" element={<BurgerConstructorPage/>}/>
+          <Route path="/profile" element={<ProtectedRouteElement children={<ProfilePage/>}/>}/>
+          <Route path="/login" element={<NotAuthRouteElement children={<LoginPage/>}/>}/>
+          <Route path="/register" element={<NotAuthRouteElement children={<RegisterPage/>}/>}/>
+          <Route path="/forgot-password" element={<NotAuthRouteElement children={<ForgotPasswordPage/>}/>}/>
+          <Route path="/reset-password" element={<NotAuthRouteElement children={<ResetPasswordPage/>}/>}/>
+          <Route path="*" element={<NotFound404/>}/>
+
+          {
+            previousLocation ? (<Route path="/ingredients/:id"
+                                       element={<Modal title="Детали ингредиента"
+                                                       onClose={() => navigate("/", {replace: true})}
+                                                       children={<IngredientDetails/>}/>}/>) : (
+              <Route path="/ingredients/:id" element={<BurgerIngredientPage children={<IngredientDetails/>}/>}/>)
+          }
+        </Routes>
       </div>
+    </div>
   )
 }

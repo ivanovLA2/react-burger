@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import {rootReducer} from "./services/reducers";
 import {configureStore} from "@reduxjs/toolkit";
 import {initialConstructorState} from "./services/reducers/burger-consrtuctor";
+import {BrowserRouter} from "react-router-dom";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -15,14 +16,16 @@ export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement
 );
 root.render(
-    <>
-      <Provider store={store}>
+  <>
+    <Provider store={store}>
+      <BrowserRouter>
         <App/>
-      </Provider>
-    </>
+      </BrowserRouter>
+    </Provider>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,0 +1,18 @@
+.register {
+    height: 430px;
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.link {
+    color: #4C4CFF;
+}
+
+.registerForm {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

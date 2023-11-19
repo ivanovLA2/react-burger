@@ -16,7 +16,14 @@ export const initialOrderState: OrderState = {
   bun: null
 }
 
-export const orderReducer = (state = initialOrderState, action: { type: any; orderNumber: number; item: any; id: string; hoverIndex: number; dragIndex: number }) => {
+export const orderReducer = (state = initialOrderState, action: {
+  type: any;
+  orderNumber: number;
+  item: any;
+  id: string;
+  hoverIndex: number;
+  dragIndex: number
+}) => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST: {
       return {
@@ -26,7 +33,14 @@ export const orderReducer = (state = initialOrderState, action: { type: any; ord
       };
     }
     case CREATE_ORDER_SUCCESS: {
-      return {...state, orderFailed: false, orderNumber: action.orderNumber, orderRequest: false, orderItems: [], bun: null};
+      return {
+        ...state,
+        orderFailed: false,
+        orderNumber: action.orderNumber,
+        orderRequest: false,
+        orderItems: [],
+        bun: null
+      };
     }
     case CREATE_ORDER_FAILED: {
       return {...state, orderFailed: true, orderRequest: false};

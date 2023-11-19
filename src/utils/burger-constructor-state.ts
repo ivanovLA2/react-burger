@@ -2,12 +2,12 @@ import BurgerIngredientModel from "./burger-ingredient-model";
 
 interface BurgerConstructorState {
 
-    items: BurgerIngredientModel[],
+  items: BurgerIngredientModel[],
 
-    itemsRequest: boolean,
-    itemsFailed: boolean,
+  itemsRequest: boolean,
+  itemsFailed: boolean,
 
-    selectedItem: BurgerIngredientModel | null,
+  selectedItem: BurgerIngredientModel | null,
 }
 
 export default BurgerConstructorState

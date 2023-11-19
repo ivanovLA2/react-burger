@@ -8,7 +8,11 @@ export const initialConstructorState: BurgerConstructorState = {
   selectedItem: null
 }
 
-export const burgerConstructorReducer = (state = initialConstructorState, action: { type: any; items: any; item: any }) => {
+export const burgerConstructorReducer = (state = initialConstructorState, action: {
+  type: any;
+  items: any;
+  item: any
+}) => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {
       return {

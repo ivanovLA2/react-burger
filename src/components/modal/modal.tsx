@@ -6,7 +6,7 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 const modalRoot = document.getElementById("react-modals");
 
-type Props = { onClose: () => void; title: string | null; children: React.ReactNode;};
+type Props = { onClose: () => void; title: string | null; children: React.ReactNode; };
 
 export default function Modal(props: Props) {
   const {onClose, title, children} = props;
@@ -41,38 +41,38 @@ export default function Modal(props: Props) {
     };
   }, [onClose]);
 
-    const ClosedButton = () => {
-       return (<button
-            type="button"
-            onClick={handleCloseButtonClick}
-            className={styles.closeModal}
-        >
-            <CloseIcon type="secondary"/>
-        </button>)
-    };
-    return (
-      ( modalRoot ?
-          createPortal(<>
-              <ModalOverlay ref={rootRef}>
+  const ClosedButton = () => {
+    return (<button
+      type="button"
+      onClick={handleCloseButtonClick}
+      className={styles.closeModal}
+    >
+      <CloseIcon type="secondary"/>
+    </button>)
+  };
+  return (
+    (modalRoot ?
+      createPortal(<>
+        <ModalOverlay ref={rootRef}>
 
-                  <div className={`${styles.modal}`}>
-                      {title ? ( <div className={`${styles.modalHeader} pt-10 pl-10 pr-10`}>
-                          <p className="text text_type_main-medium">
-                              {title}
-                          </p>
-                          <ClosedButton/>
-                      </div>) : (
-                          <div className={` ${styles.closeButton} pt-15 pr-10`}>
-                              <ClosedButton/>
-                          </div>
-                      )}
+          <div className={`${styles.modal}`}>
+            {title ? (<div className={`${styles.modalHeader} pt-10 pl-10 pr-10`}>
+              <p className="text text_type_main-medium">
+                {title}
+              </p>
+              <ClosedButton/>
+            </div>) : (
+              <div className={` ${styles.closeButton} pt-15 pr-10`}>
+                <ClosedButton/>
+              </div>
+            )}
 
-                      <div className="pt-10 pl-10 pr-10">
-                        {children}
-                      </div>
-                  </div>
-              </ModalOverlay>
-          </>, modalRoot)
-          : null)
+            <div className="pt-10 pl-10 pr-10">
+              {children}
+            </div>
+          </div>
+        </ModalOverlay>
+      </>, modalRoot)
+      : null)
   );
 }
