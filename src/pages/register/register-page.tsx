@@ -28,15 +28,15 @@ export default function RegisterPage() {
       navigate("/", {replace: true})
   }, [registerFailed, registerRequest]);
 
-  const onChangeEmail = (e: any) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }
 
-  const onChangePassword = (e: any) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
 
-  const onChangeName = (e: any) => {
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
 

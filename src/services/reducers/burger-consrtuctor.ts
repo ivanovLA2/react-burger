@@ -1,5 +1,6 @@
 import {GET_ITEMS_FAILED, GET_ITEMS_REQUEST, GET_ITEMS_SUCCESS, SET_SELECTED_ITEM} from "../actions/burger-consrtuctor";
 import BurgerConstructorState from '../../utils/burger-constructor-state'
+import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 
 export const initialConstructorState: BurgerConstructorState = {
   items: [],
@@ -9,9 +10,9 @@ export const initialConstructorState: BurgerConstructorState = {
 }
 
 export const burgerConstructorReducer = (state = initialConstructorState, action: {
-  type: any;
-  items: any;
-  item: any
+  type: string;
+  items: BurgerIngredientModel[];
+  item: BurgerIngredientModel
 }) => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {

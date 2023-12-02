@@ -48,7 +48,7 @@ export const initialAuthState: AuthState = {
 }
 
 export const authReducer = (state = initialAuthState, action: {
-  type: any;
+  type: string;
   accessToken: string,
   refreshToken: string,
   name: string,

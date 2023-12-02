@@ -32,7 +32,7 @@ export default function ForgotPasswordPage() {
     dispatch(forgotUserPassword(email))
   }
 
-  const onChangeEmail = (e: any) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }
 

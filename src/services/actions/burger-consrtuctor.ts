@@ -1,5 +1,6 @@
 import {getProductData} from "../api";
 import IngredientsResponse from "../../utils/ingredients-response";
+import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 
 export const GET_ITEMS_REQUEST = 'GET_ITEMS_REQUEST';
 export const GET_ITEMS_SUCCESS = 'GET_ITEMS_SUCCESS';
@@ -7,7 +8,7 @@ export const GET_ITEMS_FAILED = 'GET_ITEMS_FAILED';
 export const SET_SELECTED_ITEM = 'SET_SELECTED_ITEM';
 
 export function getItems() {
-  return function (dispatch: (arg0: { type: string; items?: any; }) => void) {
+  return function (dispatch: (arg0: { type: string; items?: BurgerIngredientModel[]; }) => void) {
     dispatch({
       type: GET_ITEMS_REQUEST
     });

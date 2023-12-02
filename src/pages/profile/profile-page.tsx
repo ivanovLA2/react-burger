@@ -40,17 +40,17 @@ export default function ProfilePage() {
     setNameValue(name)
   }, [email, name]);
 
-  const onChangeEmail = (e: any) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChanged(true)
     setEmailValue(e.target.value)
   }
 
-  const onChangePassword = (e: any) => {
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChanged(true)
     setPassword(e.target.value)
   }
 
-  const onChangeName = (e: any) => {
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChanged(true)
     setNameValue(e.target.value)
   }
