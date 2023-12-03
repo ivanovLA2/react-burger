@@ -7,10 +7,30 @@ import {rootReducer} from "./services/reducers";
 import {configureStore} from "@reduxjs/toolkit";
 import {initialConstructorState} from "./services/reducers/burger-consrtuctor";
 import {BrowserRouter} from "react-router-dom";
+import {socketMiddleware} from "./services/middleware";
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE
+} from "./services/actions/wsActionTypes";
+import WsActions from "./utils/ws-actions";
+import {WS_FEED} from "./services/api";
+
+const wsActions: WsActions = {
+  wsInit: WS_CONNECTION_START,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_CONNECTION_ERROR,
+  onMessage: WS_GET_MESSAGE
+};
+
 
 const store = configureStore({
   reducer: rootReducer,
   preloadedState: {burgerConstructor: initialConstructorState},
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(socketMiddleware(WS_FEED, wsActions))
 });
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

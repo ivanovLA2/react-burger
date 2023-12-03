@@ -19,6 +19,7 @@ import BurgerIngredientPage from "../../pages/burger-ingredient-page";
 import {getItems} from "../../services/actions/burger-consrtuctor";
 import {AppDispatch} from "../../index";
 import {useDispatch} from "react-redux";
+import FeedPage from "../../pages/feed/feed-page";
 
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
       <div className={appStyles.content}>
         <Routes>
           <Route path="/" element={<BurgerConstructorPage/>}/>
+          <Route path="/feed" element={<FeedPage/>}/>
           <Route path="/profile" element={<ProtectedRouteElement children={<ProfilePage/>}/>}/>
           <Route path="/login" element={<NotAuthRouteElement children={<LoginPage/>}/>}/>
           <Route path="/register" element={<NotAuthRouteElement children={<RegisterPage/>}/>}/>

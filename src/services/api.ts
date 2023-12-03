@@ -18,6 +18,9 @@ const AUTH_USER_API = '/auth/user'
 const AUTH_FORGOT_PASSWORD_API = '/password-reset'
 const AUTH_RESET_PASSWORD_API = '/password-reset/reset'
 
+export const WS_FEED = 'wss://norma.nomoreparties.space/orders/all'
+const WS_HISTORY = 'wss://norma.nomoreparties.space/orders'
+
 export const getProductData = async () => {
   return await fetch(API_ROOT + INGREDIENTS_API);
 };

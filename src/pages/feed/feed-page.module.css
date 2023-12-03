@@ -1,0 +1,46 @@
+.info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.feedContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 80%;
+}
+
+.feed {
+    overflow: auto;
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+}
+
+.totalInfo {
+    height: 100%;
+}
+
+.orderList {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.totalOrderInfo {
+font-size: 24px;
+}
+
+.orderNumbers {
+    overflow: auto;
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+}

@@ -15,10 +15,10 @@ function AppHeader() {
             className={`text text_type_main-default ml-2 ${pathname !== '/' ? 'text_color_inactive' : ''}`}>Конструктор</p>
         </Link>
 
-        <Link to="/profile/orders" className={`${styles.link} pl-5 pr-5 pt-4 pb-4`}>
-          <ListIcon type={pathname !== '/profile/orders' ? 'secondary' : 'primary'}/>
+        <Link to="/feed" className={`${styles.link} pl-5 pr-5 pt-4 pb-4`}>
+          <ListIcon type={pathname !== '/feed' ? 'secondary' : 'primary'}/>
           <p
-            className={`text text_type_main-default ml-2 ${pathname !== '/profile/orders' ? 'text_color_inactive' : ''}`}>Лента
+            className={`text text_type_main-default ml-2 ${pathname !== '/feed' ? 'text_color_inactive' : ''}`}>Лента
             заказов</p>
         </Link>
 
