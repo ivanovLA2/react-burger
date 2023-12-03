@@ -40,6 +40,10 @@ export default function ProfilePage() {
     setNameValue(name)
   }, [email, name]);
 
+  const moveToProfileOrders = () => {
+    navigate("/profile/orders", {replace: true})
+  }
+
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChanged(true)
     setEmailValue(e.target.value)
@@ -86,7 +90,7 @@ export default function ProfilePage() {
           <p className="text text_type_main-medium">
             Профиль
           </p>
-          <p className="text text_type_main-medium text_color_inactive pt-6">
+          <p className="text text_type_main-medium text_color_inactive pt-6" onClick={moveToProfileOrders}>
             История заказов
           </p>
           <p className="text text_type_main-medium text_color_inactive pt-6" onClick={logout}>

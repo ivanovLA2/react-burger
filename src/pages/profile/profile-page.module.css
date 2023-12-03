@@ -8,3 +8,20 @@
     flex-direction: column;
     align-items: center;
 }
+
+.feedContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 80%;
+}
+
+.feed {
+    overflow: auto;
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    margin-right: 40px;
+}

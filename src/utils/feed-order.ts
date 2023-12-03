@@ -1,13 +1,13 @@
 
 export default interface FeedOrder {
   success: boolean,
-  orders: Order[],
+  orders: OrderInfo[],
   total: number,
   totalToday: number
 
 }
 
-interface Order {
+export interface OrderInfo {
   ingredients: string[],
   _id: string,
   status: string,

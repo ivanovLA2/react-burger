@@ -9,6 +9,7 @@ import UserUpdateRequest from "../utils/auth/user-update-request";
 
 const API_ROOT = 'https://norma.nomoreparties.space/api';
 const INGREDIENTS_API = '/ingredients'
+const ORDER_INFO_API = '/orders/'
 const ORDERS_API = '/orders'
 const AUTH_LOGIN_API = '/auth/login'
 const AUTH_REGISTER_API = '/auth/register'
@@ -18,11 +19,14 @@ const AUTH_USER_API = '/auth/user'
 const AUTH_FORGOT_PASSWORD_API = '/password-reset'
 const AUTH_RESET_PASSWORD_API = '/password-reset/reset'
 
-export const WS_FEED = 'wss://norma.nomoreparties.space/orders/all'
-const WS_HISTORY = 'wss://norma.nomoreparties.space/orders'
+export const WS_FEED = 'wss://norma.nomoreparties.space/orders'
 
 export const getProductData = async () => {
   return await fetch(API_ROOT + INGREDIENTS_API);
+};
+
+export const getOrderInfo = async (id: string) => {
+  return await fetch(API_ROOT + ORDER_INFO_API + id);
 };
 
 export const createBurgerOrder = async (request: OrderRequest) => {

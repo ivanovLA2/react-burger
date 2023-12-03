@@ -18,12 +18,15 @@ export const socketMiddleware = (wsUrl: string, wsActions: WsActions): Middlewar
     return next => (action: any) => {
       const {dispatch} = store;
       const {type} = action;
-      const {wsInit, onOpen, onClose, onError, onMessage} = wsActions;
+      const {wsInit, wsSecureInit, onOpen, onClose, onError, onMessage} = wsActions;
       if (type === wsInit) {
-        if (localStorage.getItem('accessToken')) {
-          socket = new WebSocket(`${wsUrl}?token=${localStorage.getItem('accessToken')}`);
-        } else {
-          socket = new WebSocket(`${wsUrl}`);
+        socket = new WebSocket(`${wsUrl}/all`);
+      }
+      if (type === wsSecureInit) {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+          const valid = token.replace('Bearer ', '');
+          socket = new WebSocket(`${wsUrl}?token=${valid}`);
         }
       }
       if (type === onClose && socket) {

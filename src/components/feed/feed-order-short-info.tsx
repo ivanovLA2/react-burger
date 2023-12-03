@@ -5,18 +5,30 @@ import styles from "./feed-order.short-info.module.css"
 import WsState from "../../utils/ws-state";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const getConstructorState = (state: RootState) => state.burgerConstructor as BurgerConstructorState
 
 type Props = {
-  orderId: string
+  orderId: string,
+  isPersonal: boolean
 };
 const getWsState = (state: RootState) => state.feed as WsState
 
 
 export default function FeedOrderShortInfo(props: Props) {
+  const navigate = useNavigate();
+  const {orderId, isPersonal} = props;
+  const location = useLocation();
 
-  const {orderId} = props;
+
+  const handleClick = () => {
+    if (isPersonal) {
+      navigate("/profile/orders/" + orderId, {state: {previousProfileOrderLocation: location}})
+    } else {
+      navigate("/feed/" + orderId, {state: {previousFeedLocation: location}})
+    }
+  };
 
   const {
     feed,
@@ -28,7 +40,16 @@ export default function FeedOrderShortInfo(props: Props) {
     items,
   } = useSelector(getConstructorState);
 
-  return (<div className={styles.feedOrder}>
+  order?.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined)
+    .map((item, index) => {
+      if (!item) {
+        debugger
+      }
+      item ? console.log() : console.log(2)
+    })
+
+
+  return (<div className={styles.feedOrder} onClick={handleClick}>
     {order && (<div>
       <div className={styles.feedHeader}>
         <div className="text_type_main-small">#{order.number}</div>
@@ -37,12 +58,13 @@ export default function FeedOrderShortInfo(props: Props) {
       <div className="text_type_main-small">{order.name}</div>
       <div className={styles.orderInfo}>
         <div className={styles.ingImages}>
-          {order.ingredients.map(id => items.filter(item => item._id === id)[0]).map(item =>
-            <img src={item.image_mobile} className={styles.img} alt={item.name}/>)}
+          {order.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined).map((item, index) =>
+            <img key={index} src={item.image_mobile} className={styles.img} style={{zIndex: 1000 - index}} alt={item.name}/>
+          )}
         </div>
         <div className={styles.price}>
           <div
-            className="text_type_digits-default">{order.ingredients.map(id => items.filter(item => item._id === id)[0]).reduce((sum, i) => sum + i.type === 'bun' ? i.price * 2 : i.price, 0)}</div>
+            className="text_type_digits-default">{order.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined).reduce((sum, i) => sum + i.type === 'bun' ? i.price * 2 : i.price, 0)}</div>
           <div className="pl-1">
             <CurrencyIcon type="primary"/>
           </div>
