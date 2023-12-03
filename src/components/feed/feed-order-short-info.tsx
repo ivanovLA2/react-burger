@@ -40,14 +40,6 @@ export default function FeedOrderShortInfo(props: Props) {
     items,
   } = useSelector(getConstructorState);
 
-  order?.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined)
-    .map((item, index) => {
-      if (!item) {
-        debugger
-      }
-      item ? console.log() : console.log(2)
-    })
-
 
   return (<div className={styles.feedOrder} onClick={handleClick}>
     {order && (<div>
@@ -64,7 +56,7 @@ export default function FeedOrderShortInfo(props: Props) {
         </div>
         <div className={styles.price}>
           <div
-            className="text_type_digits-default">{order.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined).reduce((sum, i) => sum + i.type === 'bun' ? i.price * 2 : i.price, 0)}</div>
+            className="text_type_digits-default">{order.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined).reduce((sum, i) => sum + i.price, 0)}</div>
           <div className="pl-1">
             <CurrencyIcon type="primary"/>
           </div>

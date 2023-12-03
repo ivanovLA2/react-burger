@@ -5,7 +5,7 @@ import styles from "./order-info.module.css"
 import WsState from "../../utils/ws-state";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
-import {ORDER_INFO_REQUEST} from "../../services/actions/order-action-types";
+import {orderInfo} from "../../services/actions/order-action-types";
 import {useParams} from "react-router-dom";
 
 const getConstructorState = (state: RootState) => state.burgerConstructor as BurgerConstructorState
@@ -15,40 +15,41 @@ const getWsState = (state: RootState) => state.feed as WsState
 
 
 export default function OrderInfo() {
-  const {orderId} = useParams();
+  const {id} = useParams();
   const dispatch: AppDispatch = useDispatch();
 
 
   const {
     feed,
-    order
+    order,
+    orderRequest
   } = useSelector(getWsState);
-
-  const orderFromFeed = feed?.orders.filter(v => v._id === orderId)[0];
-
-  if (!order) {
-    dispatch({
-      type: ORDER_INFO_REQUEST
-    })
-  }
-
-  var result = orderFromFeed ? orderFromFeed : order;
-
   const {
     items,
   } = useSelector(getConstructorState);
 
-  return (<div className={styles.feedOrder}>
-    {result && (<div>
+  const orderFromFeed = feed?.orders.filter(v => v._id === id)[0];
+
+  if (!orderFromFeed && !order && !orderRequest && id) {
+    dispatch(orderInfo(id))
+  }
+
+  const result = orderFromFeed ? orderFromFeed : order;
+  console.log(result)
+  console.log(items)
+
+  return (<div className={styles.orderDetails}>
+    {result && items && (<div>
 
       <div className="text_type_main-small">#{result.number}</div>
       <div className="text_type_main-small">{result.name}</div>
-      <div className="text_type_main-small">{result.status}</div>
+      <div
+        className="text_type_main-small">{result.status === 'done' ? "Готов" : result.status === 'canceled' ? 'Отменен' : 'Готовится'}</div>
       <p className="text_type_main-default">Состав:</p>
 
-      <div className={styles.ing}>
+      <div className={`${styles.ing} custom-scroll`}>
         {result.ingredients.map(id => items.filter(item => item._id === id)[0]).map((item, index) =>
-          <div>
+          <div className={styles.ingInfo}>
             <img src={item.image} className={styles.img} style={{zIndex: 1000 - index}} alt={item.name}/>
             <div className="text_type_main-small">{item.name}</div>
             <div
@@ -63,7 +64,7 @@ export default function OrderInfo() {
         <div className="text_type_main-small text_color_inactive">{new Date(result.createdAt).toLocaleString()}</div>
         <div className={styles.price}>
           <div
-            className="text_type_digits-default text_color_inactive">{result.ingredients.map(id => items.filter(item => item._id === id)[0]).reduce((sum, i) => sum + i.type === 'bun' ? i.price * 2 : i.price, 0)}</div>
+            className="text_type_digits-default text_color_inactive">{result.ingredients.map(id => items.filter(item => item._id === id)[0]).reduce((sum, i) => sum + i.price, 0)}</div>
           <div className="pl-1">
             <CurrencyIcon type="primary"/>
           </div>

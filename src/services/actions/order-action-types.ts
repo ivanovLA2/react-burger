@@ -1,5 +1,6 @@
 import {getOrderInfo} from "../api";
 import {OrderInfo} from "../../utils/feed-order";
+import OrderInfoResponse from "../../utils/order-info-response";
 
 export const ORDER_INFO_REQUEST: 'ORDER_INFO_REQUEST' = 'ORDER_INFO_REQUEST';
 export const ORDER_INFO_SUCCESS: 'ORDER_INFO_SUCCESS' = 'ORDER_INFO_SUCCESS';
@@ -10,13 +11,14 @@ export function orderInfo(id: string) {
     dispatch({
       type: ORDER_INFO_REQUEST
     });
+
     getOrderInfo(id).then(res => {
       if (res && res.ok) {
-        let result = res.json() as Promise<OrderInfo>;
+        let result = res.json() as Promise<OrderInfoResponse>;
         result.then(r => {
           dispatch({
             type: ORDER_INFO_SUCCESS,
-            order: r
+            order: r.orders[0]
           });
         })
       } else {
