@@ -33,7 +33,8 @@ export const createBurgerOrder = async (request: OrderRequest) => {
   return await fetch(API_ROOT + ORDERS_API, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': request.token
     },
     body: JSON.stringify(request)
   })

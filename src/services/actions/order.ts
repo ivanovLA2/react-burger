@@ -16,27 +16,33 @@ export const createOrder = (ingredients: string[]): AppThunkAction => (dispatch:
     type: CREATE_ORDER_REQUEST
   });
 
-  createBurgerOrder({
-    ingredients: ingredients
-  }).then(res => {
-    if (res && res.ok) {
-      let result = res.json() as Promise<OrderResponse>;
-      result.then(r => {
-        dispatch({
-          type: CREATE_ORDER_SUCCESS,
-          orderNumber: r.order.number
-        });
-      })
+  const accessToken = localStorage.getItem("accessToken");
+  if (accessToken) {
+    createBurgerOrder({
+          ingredients: ingredients,
+          token: accessToken
+        }
+    ).then(res => {
+      if (res && res.ok) {
+        let result = res.json() as Promise<OrderResponse>;
+        result.then(r => {
+          dispatch({
+            type: CREATE_ORDER_SUCCESS,
+            orderNumber: r.order.number
+          });
+        })
 
-    } else {
+      } else {
+        dispatch({
+          type: CREATE_ORDER_FAILED
+        });
+      }
+    }).catch(reason => {
+      console.error("Error in creating order", reason)
       dispatch({
         type: CREATE_ORDER_FAILED
       });
-    }
-  }).catch(reason => {
-    console.error("Error in creating order", reason)
-    dispatch({
-      type: CREATE_ORDER_FAILED
     });
-  });
+  }
+
 }
