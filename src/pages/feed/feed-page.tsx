@@ -1,23 +1,24 @@
-import {AppDispatch, RootState} from "../../index";
-import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../index";
+import {useSelector} from "react-redux";
 import styles from './feed-page.module.css'
 import FeedOrderShortInfo from "../../components/feed/feed-order-short-info";
 import {useEffect} from "react";
 import {WS_CONNECTION_CLOSED, WS_CONNECTION_START} from "../../services/actions/ws-action-types";
 import WsState from "../../utils/ws-state";
+import {useDispatch} from "../profile/hooks";
 
 const getWsState = (state: RootState) => state.feed as WsState
 
 export default function FeedPage() {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   useEffect(
-    () => {
-      dispatch({type: WS_CONNECTION_START});
-      return () => {
-        dispatch({type: WS_CONNECTION_CLOSED});
-      }
-    },
-    []
+      () => {
+        dispatch({type: WS_CONNECTION_START, payload: "/all"});
+        return () => {
+          dispatch({type: WS_CONNECTION_CLOSED});
+        }
+      },
+      []
   );
 
   const {
@@ -31,7 +32,7 @@ export default function FeedPage() {
       <div className={`${styles.feed} custom-scroll`}>
         {
           feed.orders.map((v, index) => (
-            <FeedOrderShortInfo key={index} orderId={v._id} isPersonal={false}/>
+              <FeedOrderShortInfo key={index} orderId={v._id} isPersonal={false}/>
           ))
         }
       </div>
@@ -42,7 +43,7 @@ export default function FeedPage() {
             <div className={`${styles.orderNumbers} custom-scroll`}>
               {
                 feed.orders.filter(v => v.status === 'done').map((v, index) => (
-                  <p key={index} className={`text text_type_digits-medium ${styles.orderItem}`}>{v.number}</p>))
+                    <p key={index} className={`text text_type_digits-medium ${styles.orderItem}`}>{v.number}</p>))
               }
             </div>
           </div>
@@ -51,7 +52,7 @@ export default function FeedPage() {
             <div className={`${styles.orderNumbers} custom-scroll`}>
               {
                 feed.orders.filter(v => v.status !== 'done').map((v, index) => (
-                  <p key={index} className="text text_type_digits-small">{v.number}</p>))
+                    <p key={index} className="text text_type_digits-small">{v.number}</p>))
               }
             </div>
           </div>

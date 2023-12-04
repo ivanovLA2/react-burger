@@ -1,17 +1,18 @@
-import {AppDispatch, RootState} from "../../index";
+import {RootState} from "../../index";
 import AuthState from "../../utils/auth-state";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import React, {FormEvent, useEffect} from "react";
 import styles from './profile-page.module.css'
 import {getUserInfo, logoutUser, updateUserInfo} from "../../services/actions/auth";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useDispatch} from "./hooks";
 
 const getAuthState = (state: RootState) => state.auth as AuthState
 
 export default function ProfilePage() {
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const {
@@ -113,7 +114,7 @@ export default function ProfilePage() {
                   Ошибка получения данных о пользователе. Попробуйте еще раз.
               </p>
           }
-          <form onSubmit={(e) => onSave(e)} onReset={(e) => onCancel(e)} className={styles.profileInfo }>
+          <form onSubmit={(e) => onSave(e)} onReset={(e) => onCancel(e)} className={styles.profileInfo}>
             <Input
                 type={'text'}
                 placeholder={'Имя'}

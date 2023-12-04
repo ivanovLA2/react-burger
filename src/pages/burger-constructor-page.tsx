@@ -23,7 +23,7 @@ export default function BurgerConstructorPage() {
     }
     if (itemsFailed) {
       return (
-        <p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
+          <p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
     }
     if (items.length > 0) {
       return (<main className={appStyles.content}>
@@ -38,6 +38,6 @@ export default function BurgerConstructorPage() {
   }
 
   return (
-    <Content/>
+      <Content/>
   )
 }

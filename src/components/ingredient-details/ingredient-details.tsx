@@ -32,20 +32,20 @@ export default function IngredientDetails() {
 
   }
   return (
-    <>
-      {ingredient ? (<div className={styles.ingredientDetails}>
-        <img src={ingredient.image_large} alt={ingredient.name}/>
-        <p className="text text_type_main-medium pt-4">
-          {ingredient.name}
-        </p>
-        <div className={`${styles.ingredientProperties} pb-15 pt-8`}>
-          <IngredientProperty name="Калории, ккал" value={ingredient.calories}/>
-          <IngredientProperty name="Белки, г" value={ingredient.proteins}/>
-          <IngredientProperty name="Жиры, г" value={ingredient.fat}/>
-          <IngredientProperty name="Углеводы, г" value={ingredient.carbohydrates}/>
-        </div>
-      </div>) : (<p className="text text_type_main-medium">Загрузка</p>)}
-    </>
+      <>
+        {ingredient ? (<div className={styles.ingredientDetails}>
+          <img src={ingredient.image_large} alt={ingredient.name}/>
+          <p className="text text_type_main-medium pt-4">
+            {ingredient.name}
+          </p>
+          <div className={`${styles.ingredientProperties} pb-15 pt-8`}>
+            <IngredientProperty name="Калории, ккал" value={ingredient.calories}/>
+            <IngredientProperty name="Белки, г" value={ingredient.proteins}/>
+            <IngredientProperty name="Жиры, г" value={ingredient.fat}/>
+            <IngredientProperty name="Углеводы, г" value={ingredient.carbohydrates}/>
+          </div>
+        </div>) : (<p className="text text_type_main-medium">Загрузка</p>)}
+      </>
 
   )
 }

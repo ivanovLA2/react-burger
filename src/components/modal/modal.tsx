@@ -43,36 +43,36 @@ export default function Modal(props: Props) {
 
   const ClosedButton = () => {
     return (<button
-      type="button"
-      onClick={handleCloseButtonClick}
-      className={styles.closeModal}
+        type="button"
+        onClick={handleCloseButtonClick}
+        className={styles.closeModal}
     >
       <CloseIcon type="secondary"/>
     </button>)
   };
   return (
-    (modalRoot ?
-      createPortal(<>
-        <ModalOverlay ref={rootRef}>
+      (modalRoot ?
+          createPortal(<>
+            <ModalOverlay ref={rootRef}>
 
-          <div className={`${styles.modal}`}>
-            {title ? (<div className={`${styles.modalHeader} pt-10 pl-10 pr-10`}>
-              <p className="text text_type_main-medium">
-                {title}
-              </p>
-              <ClosedButton/>
-            </div>) : (
-              <div className={` ${styles.closeButton} pt-15 pr-10`}>
-                <ClosedButton/>
+              <div className={`${styles.modal}`}>
+                {title ? (<div className={`${styles.modalHeader} pt-10 pl-10 pr-10`}>
+                  <p className="text text_type_main-medium">
+                    {title}
+                  </p>
+                  <ClosedButton/>
+                </div>) : (
+                    <div className={` ${styles.closeButton} pt-15 pr-10`}>
+                      <ClosedButton/>
+                    </div>
+                )}
+
+                <div className="pt-10 pl-10 pr-10">
+                  {children}
+                </div>
               </div>
-            )}
-
-            <div className="pt-10 pl-10 pr-10">
-              {children}
-            </div>
-          </div>
-        </ModalOverlay>
-      </>, modalRoot)
-      : null)
+            </ModalOverlay>
+          </>, modalRoot)
+          : null)
   );
 }

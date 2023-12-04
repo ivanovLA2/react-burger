@@ -51,12 +51,13 @@ export default function FeedOrderShortInfo(props: Props) {
       <div className={styles.orderInfo}>
         <div className={styles.ingImages}>
           {order.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined).map((item, index) =>
-            <img key={index} src={item.image_mobile} className={styles.img} style={{zIndex: 1000 - index}} alt={item.name}/>
+              <img key={index} src={item.image_mobile} className={styles.img} style={{zIndex: 1000 - index}}
+                   alt={item.name}/>
           )}
         </div>
         <div className={styles.price}>
           <div
-            className="text_type_digits-default">{order.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined).reduce((sum, i) => sum + i.price, 0)}</div>
+              className="text_type_digits-default">{order.ingredients.map(id => items.filter(item => item._id === id)[0]).filter(item => item !== undefined).reduce((sum, i) => sum + i.price, 0)}</div>
           <div className="pl-1">
             <CurrencyIcon type="primary"/>
           </div>

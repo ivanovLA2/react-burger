@@ -8,6 +8,7 @@ import {
 } from "../actions/order";
 import OrderState from "../../utils/order-state";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
+import {v4 as uuidv4} from 'uuid';
 
 export const initialOrderState: OrderState = {
   orderNumber: null,
@@ -49,14 +50,15 @@ export const orderReducer = (state = initialOrderState, action: {
     case ADD_INGREDIENT: {
       if (action.item.ingredient.type === "bun") {
         return {
-          ...state, bun: action.item.ingredient
+          ...state, bun: action.item.ingredient,
         }
       } else {
+        action.item.ingredient.uuid = uuidv4()
         return {
           ...state, orderItems: [
             ...state.orderItems,
             action.item.ingredient
-          ]
+          ],
         }
       }
     }

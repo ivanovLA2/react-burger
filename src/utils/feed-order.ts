@@ -1,4 +1,3 @@
-
 export default interface FeedOrder {
   success: boolean,
   orders: OrderInfo[],

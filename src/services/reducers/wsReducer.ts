@@ -16,7 +16,7 @@ const initialState: WsState = {
   orderRequest: false
 };
 
-export const wsReducer = (state = initialState, action: { type: string, payload: FeedOrder, order?: OrderInfo}) => {
+export const wsReducer = (state = initialState, action: { type: string, payload: FeedOrder, order?: OrderInfo }) => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {
