@@ -43,38 +43,39 @@ export default function App() {
         <AppHeader/>
         <div className={appStyles.content}>
           <Routes>
-            <Route path="/" element={<BurgerConstructorPage/>}/>
-            <Route path="/feed" element={<FeedPage/>}/>
+            <Route path="/" element={<BurgerConstructorPage/>}>
+              {
+                previousLocation ? (<Route path="/ingredients/:id"
+                                           element={<Modal title="Детали ингредиента"
+                                                           onClose={() => navigate("/", {replace: true})}
+                                                           children={<IngredientDetails key={"modal"}/>}/>}/>) : (
+                    <Route path="/ingredients/:id" element={<BasePage children={<IngredientDetails key={"page"}/>}/>}/>)
+              }
+            </Route>
+            <Route path="/feed" element={<FeedPage/>}>
+              {
+                previousFeedLocation ? (<Route path=":id"
+                                               element={<Modal title="Детали заказа"
+                                                               onClose={() => navigate("/feed", {replace: true})}
+                                                               children={<OrderInfo key={"modal"}/>}/>}/>) : (
+                    <Route path=":id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>)
+              }
+            </Route>
             <Route path="/profile" element={<ProtectedRouteElement children={<ProfilePage/>}/>}/>
-            <Route path="/profile/orders" element={<ProtectedRouteElement children={<ProfileOrdersPage/>}/>}/>
+            <Route path="/profile/orders" element={<ProtectedRouteElement children={<ProfileOrdersPage/>}/>}>
+              {
+                previousProfileOrderLocation ? (<Route path=":id"
+                                                       element={<Modal title="Детали заказа"
+                                                                       onClose={() => navigate("/profile/orders", {replace: true})}
+                                                                       children={<OrderInfo key={"modal"}/>}/>}/>) : (
+                    <Route path=":id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>)
+              }
+            </Route>
             <Route path="/login" element={<NotAuthRouteElement children={<LoginPage/>}/>}/>
             <Route path="/register" element={<NotAuthRouteElement children={<RegisterPage/>}/>}/>
             <Route path="/forgot-password" element={<NotAuthRouteElement children={<ForgotPasswordPage/>}/>}/>
             <Route path="/reset-password" element={<NotAuthRouteElement children={<ResetPasswordPage/>}/>}/>
             <Route path="*" element={<NotFound404/>}/>
-
-            {
-              previousLocation ? (<Route path="/ingredients/:id"
-                                         element={<Modal title="Детали ингредиента"
-                                                         onClose={() => navigate("/", {replace: true})}
-                                                         children={<IngredientDetails/>}/>}/>) : (
-                  <Route path="/ingredients/:id" element={<BasePage children={<IngredientDetails/>}/>}/>)
-            }
-
-            {
-              previousProfileOrderLocation ? (<Route path="/profile/orders/:id"
-                                                     element={<Modal title="Детали заказа"
-                                                                     onClose={() => navigate("/profile/orders", {replace: true})}
-                                                                     children={<OrderInfo/>}/>}/>) : (
-                  <Route path="/profile/orders/:id" element={<BasePage children={<OrderInfo/>}/>}/>)
-            }
-            {
-              previousFeedLocation ? (<Route path="/feed/:id"
-                                             element={<Modal title="Детали заказа"
-                                                             onClose={() => navigate("/feed", {replace: true})}
-                                                             children={<OrderInfo/>}/>}/>) : (
-                  <Route path="/feed/:id" element={<BasePage children={<OrderInfo/>}/>}/>)
-            }
           </Routes>
         </div>
       </div>

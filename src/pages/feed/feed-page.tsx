@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import {WS_CONNECTION_CLOSED, WS_CONNECTION_START} from "../../services/actions/ws-action-types";
 import WsState from "../../utils/ws-state";
 import {useDispatch} from "../profile/hooks";
+import {Outlet} from "react-router-dom";
 
 const getWsState = (state: RootState) => state.feed as WsState
 
@@ -52,22 +53,22 @@ export default function FeedPage() {
             <div className={`${styles.orderNumbers} custom-scroll`}>
               {
                 feed.orders.filter(v => v.status !== 'done').map((v, index) => (
-                    <p key={index} className="text text_type_digits-small">{v.number}</p>))
+                    <p key={index} className="text_type_digits-small">{v.number}</p>))
               }
             </div>
           </div>
         </div>
         <div className={styles.totalOrderInfo}>
           <p className="text_type_main-default">Выполнено за все время:</p>
-          <p className="text text_type_digits-medium">{feed.total}</p>
+          <p className="text text_type_digits-large">{feed.total}</p>
 
           <p className="text_type_main-default">Выполнено за сегодня:</p>
-          <p className="text text_type_digits-medium">{feed.totalToday}</p>
+          <p className="text text_type_digits-large">{feed.totalToday}</p>
 
         </div>
       </div>
     </div>)}
 
-
+    <Outlet />
   </div>)
 }

@@ -53,7 +53,6 @@ export const orderReducer = (state = initialOrderState, action: {
           ...state, bun: action.item.ingredient,
         }
       } else {
-        action.item.ingredient.uuid = uuidv4()
         return {
           ...state, orderItems: [
             ...state.orderItems,

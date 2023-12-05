@@ -1,6 +1,10 @@
 .profileContent {
     display: flex;
     flex-direction: row;
+    width: 80%;
+    height: 80%;
+    align-items: center;
+    justify-content: center;
 }
 
 .profileInfo {
@@ -19,9 +23,15 @@
 
 .feed {
     overflow: auto;
-    align-items: stretch;
+    align-items: top;
     display: flex;
     flex-direction: column;
-    height: 80%;
+    height: 100%;
     margin-right: 40px;
+    overflow-x: hidden;
+}
+
+.ordersHistory{
+    height: 80%;
+    padding-left: 24px;
 }

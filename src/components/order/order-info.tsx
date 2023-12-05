@@ -36,8 +36,6 @@ export default function OrderInfo() {
   }
 
   const result = orderFromFeed ? orderFromFeed : order;
-  console.log(result)
-  console.log(items)
 
   return (<div className={styles.orderDetails}>
     {result && items && (<div>
@@ -51,11 +49,15 @@ export default function OrderInfo() {
       <div className={`${styles.ing} custom-scroll`}>
         {result.ingredients.map(id => items.filter(item => item._id === id)[0]).map((item, index) =>
             <div className={styles.ingInfo}>
-              <img src={item.image} className={styles.img} style={{zIndex: 1000 - index}} alt={item.name}/>
+              <img src={item.image} className={styles.img} style={{zIndex: 100- index}} alt={item.name}/>
               <div className="text_type_main-small">{item.name}</div>
-              <div
-                  className="text_type_main-small">{result?.ingredients.filter(v => v === item._id).length} x {item.price}</div>
-              <CurrencyIcon type="primary"/>
+              <div className={styles.price}>
+                <div className="text_type_main-small">{result?.ingredients.filter(v => v === item._id).length} x {item.price}</div>
+                <div className='pl-1'>
+                  <CurrencyIcon type="primary"/>
+                </div>
+
+              </div>
             </div>
         )}
       </div>

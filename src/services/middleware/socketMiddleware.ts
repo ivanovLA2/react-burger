@@ -16,12 +16,15 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
     let socket: WebSocket | null = null;
 
     return next => (action: any) => {
+
       const {dispatch} = store;
       const {type, payload} = action;
       const {wsInit, onOpen, onClose, onError, onMessage} = wsActions;
       if (type === wsInit) {
-        if (payload !== 0) {
+        if (payload !== '') {
+
           socket = new WebSocket(`${wsUrl}${payload}`);
+
         } else {
           const token = localStorage.getItem('accessToken');
           if (token) {

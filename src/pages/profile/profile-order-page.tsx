@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import React, {useEffect} from "react";
 import styles from './profile-page.module.css'
 import {logoutUser} from "../../services/actions/auth";
-import {useNavigate} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {WS_CONNECTION_CLOSED, WS_CONNECTION_START,} from "../../services/actions/ws-action-types";
 import FeedOrderShortInfo from "../../components/feed/feed-order-short-info";
 import WsState from "../../utils/ws-state";
@@ -62,17 +62,19 @@ export default function ProfileOrdersPage() {
             В этом разделе вы можете посмотреть историю заказов
           </p>
         </div>
-        <div>
+        <div className={styles.ordersHistory}>
           {wsConnected && feed && (<div className={styles.feedContent}>
             <div className={`${styles.feed} custom-scroll`}>
               {
-                feed.orders.map((v, index) => (
+                feed.orders?.map((v, index) => (
                     <FeedOrderShortInfo key={index} orderId={v._id} isPersonal={true}/>
                 ))
               }
             </div>
           </div>)}
         </div>
+
+        <Outlet/>
       </div>
   )
 }
