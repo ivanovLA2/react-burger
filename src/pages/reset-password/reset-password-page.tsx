@@ -4,9 +4,8 @@ import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger
 import {Link, useNavigate} from "react-router-dom";
 import {RootState} from "../../index";
 import AuthState from "../../utils/auth-state";
-import {useSelector} from "react-redux";
 import {resetUserPassword} from "../../services/actions/auth";
-import {useDispatch} from "../profile/hooks";
+import {useDispatch, useSelector} from "../profile/hooks";
 
 
 const getAuthState = (state: RootState) => state.auth as AuthState

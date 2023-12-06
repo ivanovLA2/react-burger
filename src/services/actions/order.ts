@@ -1,6 +1,7 @@
 import {createBurgerOrder} from "../api";
 import OrderResponse from "../../utils/order-response";
 import {AppDispatch, AppThunkAction} from "../types";
+import checkResponse from "../../utils/check-response";
 
 export const CREATE_ORDER_REQUEST: 'CREATE_ORDER_REQUEST' = 'CREATE_ORDER_REQUEST';
 export const CREATE_ORDER_SUCCESS: 'CREATE_ORDER_SUCCESS' = 'CREATE_ORDER_SUCCESS';
@@ -22,16 +23,13 @@ export const createOrder = (ingredients: string[]): AppThunkAction => (dispatch:
           ingredients: ingredients,
           token: accessToken
         }
-    ).then(res => {
-      if (res && res.ok) {
-        let result = res.json() as Promise<OrderResponse>;
-        result.then(r => {
-          dispatch({
-            type: CREATE_ORDER_SUCCESS,
-            orderNumber: r.order.number
-          });
-        })
-
+    ).then(checkResponse).then(res => {
+      let result = res as OrderResponse;
+      if (result.success) {
+        dispatch({
+          type: CREATE_ORDER_SUCCESS,
+          orderNumber: result.order.number
+        });
       } else {
         dispatch({
           type: CREATE_ORDER_FAILED

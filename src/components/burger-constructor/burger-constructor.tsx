@@ -3,15 +3,13 @@ import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/
 import styles from './burger-constructor.module.css'
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import {useSelector} from "react-redux";
 import {RootState} from "../../index";
 import {ADD_INGREDIENT, CHANGE_POSITION, createOrder, REMOVE_INGREDIENT} from "../../services/actions/order";
 import {useDrag, useDrop, XYCoord} from "react-dnd";
 import OrderState from "../../utils/order-state";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 import {useNavigate} from "react-router-dom";
-import {v4 as uuidv4} from 'uuid';
-import {useDispatch} from "../../pages/profile/hooks";
+import {useDispatch, useSelector} from "../../pages/profile/hooks";
 
 interface DragItem {
   index: number
@@ -65,7 +63,7 @@ function BurgerConstructor() {
     drop(item) {
       dispatch({
         type: ADD_INGREDIENT,
-        item: item
+        item: item as BurgerIngredientModel
       });
     },
   });
@@ -90,7 +88,7 @@ function BurgerConstructor() {
         <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`}>
           {orderItems.length > 0 ?
               orderItems.map((value, index) =>
-                  <IngredientDetails value={value} index={index} key={uuidv4()} handleRemove={handleRemove}
+                  <IngredientDetails value={value} index={index} key={value.uuid} handleRemove={handleRemove}
                                      moveIngredient={moveIngredient}/>
               )
               : (<p className={`${styles.empty} constructor-element `}>Добавьте ингредиент</p>)}

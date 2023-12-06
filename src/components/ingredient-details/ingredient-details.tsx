@@ -3,8 +3,8 @@ import styles from "./ingredient-details.module.css"
 import {useParams} from "react-router-dom";
 import {RootState} from "../../index";
 import BurgerConstructorState from "../../utils/burger-constructor-state";
-import {useSelector} from "react-redux";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
+import {useSelector} from "../../pages/profile/hooks";
 
 type IngredientPropertyProps = { name: String; value: number };
 

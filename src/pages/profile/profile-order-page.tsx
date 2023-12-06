@@ -1,5 +1,4 @@
 import {RootState} from "../../index";
-import {useSelector} from "react-redux";
 import React, {useEffect} from "react";
 import styles from './profile-page.module.css'
 import {logoutUser} from "../../services/actions/auth";
@@ -7,7 +6,7 @@ import {Outlet, useNavigate} from "react-router-dom";
 import {WS_CONNECTION_CLOSED, WS_CONNECTION_START,} from "../../services/actions/ws-action-types";
 import FeedOrderShortInfo from "../../components/feed/feed-order-short-info";
 import WsState from "../../utils/ws-state";
-import {useDispatch} from "./hooks";
+import {useDispatch, useSelector} from "./hooks";
 
 const getWsState = (state: RootState) => state.feed as WsState
 

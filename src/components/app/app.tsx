@@ -48,8 +48,7 @@ export default function App() {
                 previousLocation ? (<Route path="/ingredients/:id"
                                            element={<Modal title="Детали ингредиента"
                                                            onClose={() => navigate("/", {replace: true})}
-                                                           children={<IngredientDetails key={"modal"}/>}/>}/>) : (
-                    <Route path="/ingredients/:id" element={<BasePage children={<IngredientDetails key={"page"}/>}/>}/>)
+                                                           children={<IngredientDetails key={"modal"}/>}/>}/>) : null
               }
             </Route>
             <Route path="/feed" element={<FeedPage/>}>
@@ -57,8 +56,7 @@ export default function App() {
                 previousFeedLocation ? (<Route path=":id"
                                                element={<Modal title="Детали заказа"
                                                                onClose={() => navigate("/feed", {replace: true})}
-                                                               children={<OrderInfo key={"modal"}/>}/>}/>) : (
-                    <Route path=":id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>)
+                                                               children={<OrderInfo key={"modal"}/>}/>}/>) : null
               }
             </Route>
             <Route path="/profile" element={<ProtectedRouteElement children={<ProfilePage/>}/>}/>
@@ -67,8 +65,7 @@ export default function App() {
                 previousProfileOrderLocation ? (<Route path=":id"
                                                        element={<Modal title="Детали заказа"
                                                                        onClose={() => navigate("/profile/orders", {replace: true})}
-                                                                       children={<OrderInfo key={"modal"}/>}/>}/>) : (
-                    <Route path=":id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>)
+                                                                       children={<OrderInfo key={"modal"}/>}/>}/>) : null
               }
             </Route>
             <Route path="/login" element={<NotAuthRouteElement children={<LoginPage/>}/>}/>
@@ -76,6 +73,9 @@ export default function App() {
             <Route path="/forgot-password" element={<NotAuthRouteElement children={<ForgotPasswordPage/>}/>}/>
             <Route path="/reset-password" element={<NotAuthRouteElement children={<ResetPasswordPage/>}/>}/>
             <Route path="*" element={<NotFound404/>}/>
+            <Route path="/ingredients/:id" element={<BasePage children={<IngredientDetails key={"page"}/>}/>}/>
+            <Route path="/profile/orders/:id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>
+            <Route path="/feed/:id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>
           </Routes>
         </div>
       </div>

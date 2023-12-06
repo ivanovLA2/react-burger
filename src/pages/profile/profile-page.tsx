@@ -1,12 +1,11 @@
 import {RootState} from "../../index";
 import AuthState from "../../utils/auth-state";
-import {useSelector} from "react-redux";
 import React, {FormEvent, useEffect} from "react";
 import styles from './profile-page.module.css'
 import {getUserInfo, logoutUser, updateUserInfo} from "../../services/actions/auth";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch} from "./hooks";
+import {useDispatch, useSelector} from "./hooks";
 
 const getAuthState = (state: RootState) => state.auth as AuthState
 

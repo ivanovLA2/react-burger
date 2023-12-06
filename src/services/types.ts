@@ -28,6 +28,9 @@ import {
   RESET_PASSWORD_FAILED,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
+  TOKEN_FAILED,
+  TOKEN_REQUEST,
+  TOKEN_SUCCESS,
   UPDATE_USER_FAILED,
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS
@@ -58,14 +61,18 @@ export interface ICreateOrderFailedAction {
 
 export interface IAddIngredientAction {
   readonly type: typeof ADD_INGREDIENT;
+  readonly item: BurgerIngredientModel;
 }
 
 export interface IChangePositionAction {
   readonly type: typeof CHANGE_POSITION;
+  readonly dragIndex: number;
+  readonly hoverIndex: number;
 }
 
 export interface IRemoveIngredientAction {
   readonly type: typeof REMOVE_INGREDIENT;
+  readonly id: string;
 }
 
 export type TCreateOrderActions =
@@ -91,6 +98,7 @@ export interface IGetItemsFailedAction {
 
 export interface ISetSelectedItemAction {
   readonly type: typeof SET_SELECTED_ITEM;
+  readonly item: BurgerIngredientModel;
 }
 
 export type TGetItemsActions =
@@ -229,6 +237,25 @@ export type TLoginActions =
     | ILoginSuccessAction
     | ILoginFailedAction;
 
+export interface ITokenRequestAction {
+  readonly type: typeof TOKEN_REQUEST;
+}
+
+export interface ITokenSuccessAction {
+  readonly type: typeof TOKEN_SUCCESS;
+  readonly accessToken: string;
+  readonly refreshToken: string;
+}
+
+export interface ITokenFailedAction {
+  readonly type: typeof TOKEN_FAILED;
+}
+
+export type TTokenActions =
+    | ITokenRequestAction
+    | ITokenSuccessAction
+    | ITokenFailedAction;
+
 
 export interface IOrderInfoRequestAction {
   readonly type: typeof ORDER_INFO_REQUEST;
@@ -276,19 +303,31 @@ export type TWSActions =
     | IWSConnectionSuccessAction
     | IWSConnectionErrorAction
     | IWSConnectionClosedAction
-    | IWSGetMessageAction;
+    | IWSGetMessageAction
+    | TOrderInfoActions;
 
-type AppActions = TWSActions
-    | TOrderInfoActions
+export type TAuthActions =
     | TLoginActions
     | TRegisterActions
     | TLogoutActions
+    | TTokenActions
     | TForgotPasswordActions
     | TResetPasswordActions
-    | TUpdateUserActions
-    | TGetItemsActions
+    | TGetUserActions
+    | TUpdateUserActions;
+
+export type TOrderActions =
     | TCreateOrderActions
-    | TGetUserActions;
+    ;
+
+export type BurgerConstructorActions =
+    | TGetItemsActions;
+
+type AppActions = TWSActions
+    | TOrderActions
+    | TAuthActions
+    | TResetPasswordActions
+    | BurgerConstructorActions;
 
 export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AppActions>;
 export type AppDispatch = ThunkDispatch<RootState, unknown, AppActions>;

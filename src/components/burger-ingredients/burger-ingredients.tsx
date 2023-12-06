@@ -3,12 +3,12 @@ import styles from './burger-ingredients.module.css'
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import {useSelector} from "react-redux";
 import BurgerConstructorState from "../../utils/burger-constructor-state";
 import {RootState} from "../../index";
 import useOnScreen from "../../hook/on-sreen-hook";
 import OrderState from "../../utils/order-state";
 import {useLocation, useNavigate} from "react-router-dom";
+import {useSelector} from "../../pages/profile/hooks";
 
 
 const getOrderState = (state: RootState) => state.order as OrderState

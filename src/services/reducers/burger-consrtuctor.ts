@@ -1,6 +1,6 @@
 import {GET_ITEMS_FAILED, GET_ITEMS_REQUEST, GET_ITEMS_SUCCESS, SET_SELECTED_ITEM} from "../actions/burger-consrtuctor";
 import BurgerConstructorState from '../../utils/burger-constructor-state'
-import BurgerIngredientModel from "../../utils/burger-ingredient-model";
+import {BurgerConstructorActions} from "../types";
 
 export const initialConstructorState: BurgerConstructorState = {
   items: [],
@@ -9,11 +9,7 @@ export const initialConstructorState: BurgerConstructorState = {
   selectedItem: null
 }
 
-export const burgerConstructorReducer = (state = initialConstructorState, action: {
-  type: string;
-  items: BurgerIngredientModel[];
-  item: BurgerIngredientModel
-}) => {
+export const burgerConstructorReducer = (state = initialConstructorState, action: BurgerConstructorActions) => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {
       return {

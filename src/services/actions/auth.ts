@@ -2,6 +2,7 @@ import {forgotPassword, getUser, login, logout, refresh, register, resetPassword
 import AuthResponse from "../../utils/auth/auth-response";
 import UserResponse from "../../utils/auth/user-response";
 import {AppDispatch, AppThunkAction} from "../types";
+import checkResponse from "../../utils/check-response";
 
 export const LOGIN_REQUEST: 'LOGIN_REQUEST' = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS: 'LOGIN_SUCCESS' = 'LOGIN_SUCCESS';
@@ -43,22 +44,14 @@ export const loginUser = (email: string, password: string): AppThunkAction => (d
   login({
     email: email,
     password: password
-  }).then(res => {
-    if (res && res.ok) {
-      let result = res.json() as Promise<AuthResponse>;
-      result.then(r => {
-        if (r.success) {
-          dispatch({
-            type: LOGIN_SUCCESS,
-            accessToken: r.accessToken,
-            refreshToken: r.refreshToken
-          });
-        } else {
-          dispatch({
-            type: LOGIN_FAILED
-          });
-        }
-      })
+  }).then(checkResponse).then(res => {
+    let result = res as AuthResponse;
+    if (result.success) {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken
+      });
     } else {
       dispatch({
         type: LOGIN_FAILED
@@ -81,27 +74,21 @@ export const registerUser = (email: string, password: string, name: string): App
     email: email,
     password: password,
     name: name
-  }).then(res => {
-    if (res && res.ok) {
-      let result = res.json() as Promise<AuthResponse>;
-      result.then(r => {
-        if (r.success) {
-          dispatch({
-            type: REGISTER_SUCCESS,
-            accessToken: r.accessToken,
-            refreshToken: r.refreshToken
-          });
-        } else {
-          dispatch({
-            type: REGISTER_FAILED
-          });
-        }
-      })
-    } else {
-      dispatch({
-        type: REGISTER_FAILED
-      });
-    }
+  }).then(checkResponse).then(res => {
+    let result = res as Promise<AuthResponse>;
+    result.then(r => {
+      if (r.success) {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          accessToken: r.accessToken,
+          refreshToken: r.refreshToken
+        });
+      } else {
+        dispatch({
+          type: REGISTER_FAILED
+        });
+      }
+    })
   }).catch(reason => {
     console.error("Error in register user", reason)
     dispatch({
@@ -117,20 +104,12 @@ export const logoutUser = (refreshToken: string): AppThunkAction => (dispatch: A
 
   logout({
     token: refreshToken
-  }).then(res => {
-    if (res && res.ok) {
-      let result = res.json() as Promise<AuthResponse>;
-      result.then(r => {
-        if (r.success) {
-          dispatch({
-            type: LOGOUT_SUCCESS,
-          });
-        } else {
-          dispatch({
-            type: LOGOUT_FAILED
-          });
-        }
-      })
+  }).then(checkResponse).then(res => {
+    let result = res as AuthResponse;
+    if (result.success) {
+      dispatch({
+        type: LOGOUT_SUCCESS,
+      });
     } else {
       dispatch({
         type: LOGOUT_FAILED
@@ -151,20 +130,12 @@ export const forgotUserPassword = (email: string): AppThunkAction => (dispatch: 
 
   forgotPassword({
     email: email
-  }).then(res => {
-    if (res && res.ok) {
-      let result = res.json() as Promise<AuthResponse>;
-      result.then(r => {
-        if (r.success) {
-          dispatch({
-            type: FORGOT_PASSWORD_SUCCESS,
-          });
-        } else {
-          dispatch({
-            type: FORGOT_PASSWORD_FAILED
-          });
-        }
-      })
+  }).then(checkResponse).then(res => {
+    let result = res as AuthResponse;
+    if (result.success) {
+      dispatch({
+        type: FORGOT_PASSWORD_SUCCESS,
+      });
     } else {
       dispatch({
         type: FORGOT_PASSWORD_FAILED
@@ -186,20 +157,12 @@ export const resetUserPassword = (token: string, password: string): AppThunkActi
   resetPassword({
     token: token,
     password: password
-  }).then(res => {
-    if (res && res.ok) {
-      let result = res.json() as Promise<AuthResponse>;
-      result.then(r => {
-        if (r.success) {
-          dispatch({
-            type: RESET_PASSWORD_SUCCESS,
-          });
-        } else {
-          dispatch({
-            type: RESET_PASSWORD_FAILED
-          });
-        }
-      })
+  }).then(checkResponse).then(res => {
+    let result = res as AuthResponse;
+    if (result.success) {
+      dispatch({
+        type: RESET_PASSWORD_SUCCESS,
+      });
     } else {
       dispatch({
         type: RESET_PASSWORD_FAILED
@@ -227,22 +190,16 @@ async function updateToken(dispatch: (arg0: {
   try {
     const res = await refresh({
       token: refreshToken
-    });
+    }).then(checkResponse);
 
-    if (res && res.ok) {
-      let result = await res.json() as AuthResponse;
-      if (result.success) {
-        dispatch({
-          type: TOKEN_SUCCESS,
-          refreshToken: result.refreshToken,
-          accessToken: result.accessToken
-        });
-        return result.accessToken;
-      } else {
-        dispatch({
-          type: TOKEN_FAILED
-        });
-      }
+    let result = await res as AuthResponse;
+    if (result.success) {
+      dispatch({
+        type: TOKEN_SUCCESS,
+        refreshToken: result.refreshToken,
+        accessToken: result.accessToken
+      });
+      return result.accessToken;
     } else {
       dispatch({
         type: TOKEN_FAILED
@@ -275,7 +232,7 @@ export function getUserInfo(token: string) {
     getUser({
       authorization: token
     }).then(async res => {
-      if (false) {
+      if (res && res.ok) {
         let result = await res.json() as UserResponse;
         if (result.success) {
           dispatch({
@@ -289,7 +246,7 @@ export function getUserInfo(token: string) {
           });
         }
 
-      } else if (true && refreshToken) {
+      } else if (res.status === 403 && refreshToken) {
         const accessToken = await updateToken(dispatch, refreshToken);
         if (accessToken) {
           getUser({

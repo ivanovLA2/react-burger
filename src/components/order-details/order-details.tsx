@@ -3,6 +3,7 @@ import React from "react";
 import done from "../../images/done.svg"
 
 type Props = { orderNumber: string | null; orderRequest: boolean; orderFailed: boolean };
+
 export default function OrderDetails(props: Props) {
   const {orderNumber, orderRequest, orderFailed} = props;
   return (

@@ -1,6 +1,8 @@
 import {getProductData} from "../api";
 import IngredientsResponse from "../../utils/ingredients-response";
 import {AppDispatch, AppThunkAction} from "../types";
+import {v4 as uuidv4} from 'uuid';
+import checkResponse from "../../utils/check-response";
 
 export const GET_ITEMS_REQUEST: 'GET_ITEMS_REQUEST' = 'GET_ITEMS_REQUEST';
 export const GET_ITEMS_SUCCESS: 'GET_ITEMS_SUCCESS' = 'GET_ITEMS_SUCCESS';
@@ -11,20 +13,13 @@ export const getItems = (): AppThunkAction => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_ITEMS_REQUEST
   });
-  getProductData().then(res => {
-    if (res && res.ok) {
-      let result = res.json() as Promise<IngredientsResponse>;
-      result.then(r => {
-        dispatch({
-          type: GET_ITEMS_SUCCESS,
-          items: r.data
-        });
-      })
-    } else {
-      dispatch({
-        type: GET_ITEMS_FAILED
-      });
-    }
+  getProductData().then(checkResponse).then(res => {
+    let result = res as IngredientsResponse;
+    result.data.forEach(item => item.uuid = uuidv4())
+    dispatch({
+      type: GET_ITEMS_SUCCESS,
+      items: result.data
+    });
   }).catch(reason => {
     console.error("Error in getting data", reason)
     dispatch({

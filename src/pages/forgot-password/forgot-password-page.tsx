@@ -2,11 +2,10 @@ import React, {FormEvent, useEffect} from "react";
 import styles from "./forgot-password-page.module.css"
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {forgotUserPassword} from "../../services/actions/auth";
 import {RootState} from "../../index";
 import AuthState from "../../utils/auth-state";
-import {useDispatch} from "../profile/hooks";
+import {useDispatch, useSelector} from "../profile/hooks";
 
 
 const getAuthState = (state: RootState) => state.auth as AuthState

@@ -1,4 +1,3 @@
-import FeedOrder, {OrderInfo} from "../../utils/feed-order";
 import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_ERROR,
@@ -7,6 +6,7 @@ import {
 } from "../actions/ws-action-types";
 import WsState from "../../utils/ws-state";
 import {ORDER_INFO_FAILED, ORDER_INFO_REQUEST, ORDER_INFO_SUCCESS} from "../actions/order-action-types";
+import {TWSActions} from "../types";
 
 const initialState: WsState = {
   wsConnected: false,
@@ -16,7 +16,7 @@ const initialState: WsState = {
   orderRequest: false
 };
 
-export const wsReducer = (state = initialState, action: { type: string, payload: FeedOrder, order?: OrderInfo }) => {
+export const wsReducer = (state = initialState, action: TWSActions) => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {
@@ -53,12 +53,21 @@ export const wsReducer = (state = initialState, action: { type: string, payload:
         orderFailed: false
       };
     case ORDER_INFO_SUCCESS:
-      return {
-        ...state,
-        orderRequest: false,
-        orderFailed: false,
-        order: action.order
+      if (action.order) {
+        return {
+          ...state,
+          orderRequest: false,
+          orderFailed: false,
+          order: action.order
+        }
+      } else {
+        return {
+          ...state,
+          orderRequest: false,
+          orderFailed: true
+        }
       }
+
     case ORDER_INFO_FAILED:
       return {
         ...state,

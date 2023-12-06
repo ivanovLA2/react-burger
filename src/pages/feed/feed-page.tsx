@@ -1,11 +1,10 @@
 import {RootState} from "../../index";
-import {useSelector} from "react-redux";
 import styles from './feed-page.module.css'
 import FeedOrderShortInfo from "../../components/feed/feed-order-short-info";
 import {useEffect} from "react";
 import {WS_CONNECTION_CLOSED, WS_CONNECTION_START} from "../../services/actions/ws-action-types";
 import WsState from "../../utils/ws-state";
-import {useDispatch} from "../profile/hooks";
+import {useDispatch, useSelector} from "../profile/hooks";
 import {Outlet} from "react-router-dom";
 
 const getWsState = (state: RootState) => state.feed as WsState
@@ -69,6 +68,6 @@ export default function FeedPage() {
       </div>
     </div>)}
 
-    <Outlet />
+    <Outlet/>
   </div>)
 }

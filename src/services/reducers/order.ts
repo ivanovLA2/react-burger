@@ -7,8 +7,7 @@ import {
   REMOVE_INGREDIENT
 } from "../actions/order";
 import OrderState from "../../utils/order-state";
-import BurgerIngredientModel from "../../utils/burger-ingredient-model";
-import {v4 as uuidv4} from 'uuid';
+import {TOrderActions} from "../types";
 
 export const initialOrderState: OrderState = {
   orderNumber: null,
@@ -18,14 +17,7 @@ export const initialOrderState: OrderState = {
   bun: null
 }
 
-export const orderReducer = (state = initialOrderState, action: {
-  type: string;
-  orderNumber: number;
-  item: { ingredient: BurgerIngredientModel };
-  id: string;
-  hoverIndex: number;
-  dragIndex: number
-}) => {
+export const orderReducer = (state = initialOrderState, action: TOrderActions) => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST: {
       return {
@@ -48,15 +40,15 @@ export const orderReducer = (state = initialOrderState, action: {
       return {...state, orderFailed: true, orderRequest: false};
     }
     case ADD_INGREDIENT: {
-      if (action.item.ingredient.type === "bun") {
+      if (action.item.type === "bun") {
         return {
-          ...state, bun: action.item.ingredient,
+          ...state, bun: action.item,
         }
       } else {
         return {
           ...state, orderItems: [
             ...state.orderItems,
-            action.item.ingredient
+            action.item
           ],
         }
       }
