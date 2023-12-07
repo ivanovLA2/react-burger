@@ -32,7 +32,7 @@ export default function FeedPage() {
       <div className={`${styles.feed} custom-scroll`}>
         {
           feed.orders.map((v, index) => (
-              <FeedOrderShortInfo key={index} orderId={v._id} isPersonal={false}/>
+              <FeedOrderShortInfo key={index} orderNumber={v.number} isPersonal={false}/>
           ))
         }
       </div>

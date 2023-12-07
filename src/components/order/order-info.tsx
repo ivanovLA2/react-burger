@@ -11,12 +11,11 @@ import groupCountStrings from "../../utils/aggregate-functions";
 
 const getConstructorState = (state: RootState) => state.burgerConstructor as BurgerConstructorState
 
-
 const getWsState = (state: RootState) => state.feed as WsState
 
 
 export default function OrderInfo() {
-  const {id} = useParams();
+  const {id } = useParams();
   const dispatch = useDispatch();
 
   const {
@@ -29,7 +28,7 @@ export default function OrderInfo() {
     items,
   } = useSelector(getConstructorState);
 
-  const orderFromFeed = feed?.orders.filter(v => v._id === id)[0];
+  const orderFromFeed = feed?.orders.filter(v => v.number === Number(id))[0];
 
   if (!orderFromFeed && !order && !orderRequest && id && !orderFailed) {
     dispatch(orderInfo(id))

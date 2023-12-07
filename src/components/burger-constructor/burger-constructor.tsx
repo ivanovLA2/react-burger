@@ -10,6 +10,7 @@ import OrderState from "../../utils/order-state";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "../../pages/profile/hooks";
+import {v4 as uuidv4} from "uuid";
 
 interface DragItem {
   index: number
@@ -63,7 +64,7 @@ function BurgerConstructor() {
     drop(item) {
       dispatch({
         type: ADD_INGREDIENT,
-        item: item as BurgerIngredientModel
+        item: { ...item as BurgerIngredientModel,  uniqueId: uuidv4() }
       });
     },
   });
@@ -88,7 +89,7 @@ function BurgerConstructor() {
         <div className={`${styles.constructor} pt-3 pl-8 pr-5 custom-scroll`}>
           {orderItems.length > 0 ?
               orderItems.map((value, index) =>
-                  <IngredientDetails value={value} index={index} key={value.uuid} handleRemove={handleRemove}
+                  <IngredientDetails value={value} index={index} key={value.uniqueId} handleRemove={handleRemove}
                                      moveIngredient={moveIngredient}/>
               )
               : (<p className={`${styles.empty} constructor-element `}>Добавьте ингредиент</p>)}

@@ -1,7 +1,6 @@
 import {getProductData} from "../api";
 import IngredientsResponse from "../../utils/ingredients-response";
 import {AppDispatch, AppThunkAction} from "../types";
-import {v4 as uuidv4} from 'uuid';
 import checkResponse from "../../utils/check-response";
 
 export const GET_ITEMS_REQUEST: 'GET_ITEMS_REQUEST' = 'GET_ITEMS_REQUEST';
@@ -15,7 +14,6 @@ export const getItems = (): AppThunkAction => (dispatch: AppDispatch) => {
   });
   getProductData().then(checkResponse).then(res => {
     let result = res as IngredientsResponse;
-    result.data.forEach(item => item.uuid = uuidv4())
     dispatch({
       type: GET_ITEMS_SUCCESS,
       items: result.data

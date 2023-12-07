@@ -11,7 +11,7 @@ import groupCountStrings from "../../utils/aggregate-functions";
 const getConstructorState = (state: RootState) => state.burgerConstructor as BurgerConstructorState
 
 type Props = {
-  orderId: string,
+  orderNumber: number,
   isPersonal: boolean
 };
 const getWsState = (state: RootState) => state.feed as WsState
@@ -19,15 +19,15 @@ const getWsState = (state: RootState) => state.feed as WsState
 
 export default function FeedOrderShortInfo(props: Props) {
   const navigate = useNavigate();
-  const {orderId, isPersonal} = props;
+  const {orderNumber, isPersonal} = props;
   const location = useLocation();
 
 
   const handleClick = () => {
     if (isPersonal) {
-      navigate("/profile/orders/" + orderId, {state: {previousProfileOrderLocation: location}})
+      navigate("/profile/orders/" + orderNumber, {state: {previousProfileOrderLocation: location}})
     } else {
-      navigate("/feed/" + orderId, {state: {previousFeedLocation: location}})
+      navigate("/feed/" + orderNumber, {state: {previousFeedLocation: location}})
     }
   };
 
@@ -35,7 +35,7 @@ export default function FeedOrderShortInfo(props: Props) {
     feed,
   } = useSelector(getWsState);
 
-  const order = feed?.orders.filter(v => v._id === orderId)[0];
+  const order = feed?.orders.filter(v => v.number === orderNumber)[0];
 
   const {
     items,

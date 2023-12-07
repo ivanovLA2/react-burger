@@ -66,7 +66,7 @@ export default function ProfileOrdersPage() {
             <div className={`${styles.feed} custom-scroll`}>
               {
                 feed.orders?.map((v, index) => (
-                    <FeedOrderShortInfo key={index} orderId={v._id} isPersonal={true}/>
+                    <FeedOrderShortInfo key={index} orderNumber={v.number} isPersonal={true}/>
                 ))
               }
             </div>
