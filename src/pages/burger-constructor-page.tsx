@@ -1,11 +1,12 @@
 import {RootState} from "../index";
-import {useSelector} from "react-redux";
 import React from "react";
 import appStyles from "../components/app/app.module.css";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import BurgerIngredients from "../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../components/burger-constructor/burger-constructor";
+import {Outlet} from "react-router-dom";
+import {useSelector} from "./profile/hooks";
 
 const getState = (state: RootState) => state.burgerConstructor
 
@@ -23,7 +24,7 @@ export default function BurgerConstructorPage() {
     }
     if (itemsFailed) {
       return (
-        <p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
+          <p className={`${appStyles.message} text text_type_main-large`}> Возникла ошибка, попробуйте позже </p>)
     }
     if (items.length > 0) {
       return (<main className={appStyles.content}>
@@ -38,6 +39,9 @@ export default function BurgerConstructorPage() {
   }
 
   return (
-    <Content/>
+      <>
+        <Content/>
+        <Outlet/>
+      </>
   )
 }

@@ -15,47 +15,69 @@ import {NotAuthRouteElement} from "../not-authorize-route";
 import ProfilePage from "../../pages/profile/profile-page";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import BurgerIngredientPage from "../../pages/burger-ingredient-page";
+import BasePage from "../../pages/base-page";
 import {getItems} from "../../services/actions/burger-consrtuctor";
-import {AppDispatch} from "../../index";
-import {useDispatch} from "react-redux";
+import FeedPage from "../../pages/feed/feed-page";
+import ProfileOrdersPage from "../../pages/profile/profile-order-page";
+import OrderInfo from "../order/order-info";
+import {useDispatch} from "../../pages/profile/hooks";
 
 
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const previousLocation = location.state?.previousLocation;
-  const dispatch: AppDispatch = useDispatch();
+  const previousProfileOrderLocation = location.state?.previousProfileOrderLocation;
+  const previousFeedLocation = location.state?.previousFeedLocation;
+  const dispatch = useDispatch();
 
   useEffect(
-    () => {
-      dispatch(getItems());
-    },
-    []
+      () => {
+        dispatch(getItems());
+      },
+      []
   );
 
   return (
-    <div className={appStyles.app}>
-      <AppHeader/>
-      <div className={appStyles.content}>
-        <Routes>
-          <Route path="/" element={<BurgerConstructorPage/>}/>
-          <Route path="/profile" element={<ProtectedRouteElement children={<ProfilePage/>}/>}/>
-          <Route path="/login" element={<NotAuthRouteElement children={<LoginPage/>}/>}/>
-          <Route path="/register" element={<NotAuthRouteElement children={<RegisterPage/>}/>}/>
-          <Route path="/forgot-password" element={<NotAuthRouteElement children={<ForgotPasswordPage/>}/>}/>
-          <Route path="/reset-password" element={<NotAuthRouteElement children={<ResetPasswordPage/>}/>}/>
-          <Route path="*" element={<NotFound404/>}/>
-
-          {
-            previousLocation ? (<Route path="/ingredients/:id"
-                                       element={<Modal title="Детали ингредиента"
-                                                       onClose={() => navigate("/", {replace: true})}
-                                                       children={<IngredientDetails/>}/>}/>) : (
-              <Route path="/ingredients/:id" element={<BurgerIngredientPage children={<IngredientDetails/>}/>}/>)
-          }
-        </Routes>
+      <div className={appStyles.app}>
+        <AppHeader/>
+        <div className={appStyles.content}>
+          <Routes>
+            <Route path="/" element={<BurgerConstructorPage/>}>
+              {
+                previousLocation ? (<Route path="/ingredients/:id"
+                                           element={<Modal title="Детали ингредиента"
+                                                           onClose={() => navigate("/", {replace: true})}
+                                                           children={<IngredientDetails key={"modal"}/>}/>}/>) : null
+              }
+            </Route>
+            <Route path="/feed" element={<FeedPage/>}>
+              {
+                previousFeedLocation ? (<Route path=":id"
+                                               element={<Modal title="Детали заказа"
+                                                               onClose={() => navigate("/feed", {replace: true})}
+                                                               children={<OrderInfo key={"modal"}/>}/>}/>) : null
+              }
+            </Route>
+            <Route path="/profile" element={<ProtectedRouteElement children={<ProfilePage/>}/>}/>
+            <Route path="/profile/orders" element={<ProtectedRouteElement children={<ProfileOrdersPage/>}/>}>
+              {
+                previousProfileOrderLocation ? (<Route path=":id"
+                                                       element={<Modal title="Детали заказа"
+                                                                       onClose={() => navigate("/profile/orders", {replace: true})}
+                                                                       children={<OrderInfo key={"modal"}/>}/>}/>) : null
+              }
+            </Route>
+            <Route path="/login" element={<NotAuthRouteElement children={<LoginPage/>}/>}/>
+            <Route path="/register" element={<NotAuthRouteElement children={<RegisterPage/>}/>}/>
+            <Route path="/forgot-password" element={<NotAuthRouteElement children={<ForgotPasswordPage/>}/>}/>
+            <Route path="/reset-password" element={<NotAuthRouteElement children={<ResetPasswordPage/>}/>}/>
+            <Route path="*" element={<NotFound404/>}/>
+            <Route path="/ingredients/:id" element={<BasePage children={<IngredientDetails key={"page"}/>}/>}/>
+            <Route path="/profile/orders/:id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>
+            <Route path="/feed/:id" element={<BasePage children={<OrderInfo key={"page"}/>}/>}/>
+          </Routes>
+        </div>
       </div>
-    </div>
   )
 }

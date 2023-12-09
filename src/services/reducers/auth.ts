@@ -25,6 +25,7 @@ import {
   UPDATE_USER_SUCCESS,
 } from "../actions/auth";
 import AuthState from "../../utils/auth-state";
+import {TAuthActions} from "../types";
 
 export const initialAuthState: AuthState = {
   loginRequest: false,
@@ -47,13 +48,7 @@ export const initialAuthState: AuthState = {
   updateUserFailed: false
 }
 
-export const authReducer = (state = initialAuthState, action: {
-  type: string;
-  accessToken: string,
-  refreshToken: string,
-  name: string,
-  email: string
-}) => {
+export const authReducer = (state = initialAuthState, action: TAuthActions) => {
   switch (action.type) {
     case LOGIN_REQUEST: {
       return {

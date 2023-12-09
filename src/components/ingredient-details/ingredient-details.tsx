@@ -3,8 +3,8 @@ import styles from "./ingredient-details.module.css"
 import {useParams} from "react-router-dom";
 import {RootState} from "../../index";
 import BurgerConstructorState from "../../utils/burger-constructor-state";
-import {useSelector} from "react-redux";
 import BurgerIngredientModel from "../../utils/burger-ingredient-model";
+import {useSelector} from "../../pages/profile/hooks";
 
 type IngredientPropertyProps = { name: String; value: number };
 
@@ -32,20 +32,20 @@ export default function IngredientDetails() {
 
   }
   return (
-    <>
-      {ingredient ? (<div className={styles.ingredientDetails}>
-        <img src={ingredient.image_large} alt={ingredient.name}/>
-        <p className="text text_type_main-medium pt-4">
-          {ingredient.name}
-        </p>
-        <div className={`${styles.ingredientProperties} pb-15 pt-8`}>
-          <IngredientProperty name="Калории, ккал" value={ingredient.calories}/>
-          <IngredientProperty name="Белки, г" value={ingredient.proteins}/>
-          <IngredientProperty name="Жиры, г" value={ingredient.fat}/>
-          <IngredientProperty name="Углеводы, г" value={ingredient.carbohydrates}/>
-        </div>
-      </div>) : (<p className="text text_type_main-medium">Загрузка</p>)}
-    </>
+      <>
+        {ingredient ? (<div className={styles.ingredientDetails}>
+          <img src={ingredient.image_large} alt={ingredient.name}/>
+          <p className="text text_type_main-medium pt-4">
+            {ingredient.name}
+          </p>
+          <div className={`${styles.ingredientProperties} pb-15 pt-8`}>
+            <IngredientProperty name="Калории, ккал" value={ingredient.calories}/>
+            <IngredientProperty name="Белки, г" value={ingredient.proteins}/>
+            <IngredientProperty name="Жиры, г" value={ingredient.fat}/>
+            <IngredientProperty name="Углеводы, г" value={ingredient.carbohydrates}/>
+          </div>
+        </div>) : (<p className="text text_type_main-medium">Загрузка</p>)}
+      </>
 
   )
 }

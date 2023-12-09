@@ -1,3 +1,4 @@
 export default interface OrderRequest {
-  ingredients: string[]
+  ingredients: string[],
+  token: string
 }

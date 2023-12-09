@@ -1,17 +1,17 @@
-import {AppDispatch, RootState} from "../../index";
+import {RootState} from "../../index";
 import AuthState from "../../utils/auth-state";
-import {useDispatch, useSelector} from "react-redux";
 import React, {FormEvent, useEffect} from "react";
 import styles from './profile-page.module.css'
 import {getUserInfo, logoutUser, updateUserInfo} from "../../services/actions/auth";
 import {useNavigate} from "react-router-dom";
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useDispatch, useSelector} from "./hooks";
 
 const getAuthState = (state: RootState) => state.auth as AuthState
 
 export default function ProfilePage() {
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const {
@@ -39,6 +39,10 @@ export default function ProfilePage() {
     setEmailValue(email);
     setNameValue(name)
   }, [email, name]);
+
+  const moveToProfileOrders = () => {
+    navigate("/profile/orders", {replace: true})
+  }
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChanged(true)
@@ -86,7 +90,7 @@ export default function ProfilePage() {
           <p className="text text_type_main-medium">
             Профиль
           </p>
-          <p className="text text_type_main-medium text_color_inactive pt-6">
+          <p className="text text_type_main-medium text_color_inactive pt-6" onClick={moveToProfileOrders}>
             История заказов
           </p>
           <p className="text text_type_main-medium text_color_inactive pt-6" onClick={logout}>
@@ -109,7 +113,7 @@ export default function ProfilePage() {
                   Ошибка получения данных о пользователе. Попробуйте еще раз.
               </p>
           }
-          <form onSubmit={(e) => onSave(e)} onReset={(e) => onCancel(e)} className={styles.profileInfo }>
+          <form onSubmit={(e) => onSave(e)} onReset={(e) => onCancel(e)} className={styles.profileInfo}>
             <Input
                 type={'text'}
                 placeholder={'Имя'}
