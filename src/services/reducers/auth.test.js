@@ -25,7 +25,7 @@ import {
     UPDATE_USER_SUCCESS,
 } from "../actions/auth";
 
-import {authReducer} from './auth'
+import {authReducer, initialAuthState} from './auth'
 
 describe('Auth reducer', () => {
     jest.spyOn(Object.getPrototypeOf(localStorage), 'setItem')
@@ -35,26 +35,7 @@ describe('Auth reducer', () => {
 
     it('should return the initial state', () => {
         expect(authReducer(undefined, {})).toEqual(
-            {
-                loginRequest: false,
-                loginFailed: false,
-                registerRequest: false,
-                registerFailed: false,
-                logoutRequest: false,
-                logoutFailed: false,
-                tokenRequest: false,
-                tokenFailed: false,
-                forgotRequest: false,
-                forgotFailed: false,
-                resetPasswordFailed: false,
-                resetPasswordRequest: false,
-                email: '',
-                name: '',
-                getUserFailed: false,
-                updateUserRequest: false,
-                getUserRequest: false,
-                updateUserFailed: false
-            }
+            initialAuthState
         )
     })
 

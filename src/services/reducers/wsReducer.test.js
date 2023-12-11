@@ -1,4 +1,4 @@
-import {wsReducer} from './wsReducer'
+import {initialState, wsReducer} from './wsReducer'
 import {
     WS_CONNECTION_CLOSED,
     WS_CONNECTION_ERROR,
@@ -10,13 +10,7 @@ import {ORDER_INFO_FAILED, ORDER_INFO_REQUEST, ORDER_INFO_SUCCESS} from "../acti
 describe('WS reducer', () => {
     it('should return the initial state', () => {
         expect(wsReducer(undefined, {})).toEqual(
-            {
-                wsConnected: false,
-                feed: null,
-                order: null,
-                orderFailed: false,
-                orderRequest: false
-            }
+            initialState
         )
     })
 

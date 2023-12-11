@@ -1,7 +1,23 @@
-describe('Burger constructor test', function() {
+import {API_ROOT, INGREDIENTS_API} from "../../../src/services/api";
+
+describe('Burger constructor test', function () {
+
     beforeEach(() => {
-        cy.intercept("GET", "api/auth/user", { fixture: "user.json" });
-        cy.intercept("POST", "api/orders", { fixture: "order.json" }).as("postOrder");
+        cy.intercept(API_ROOT + INGREDIENTS_API).as('getIngredients')
+        cy.intercept("GET", "api/auth/user", {fixture: "user.json"});
+        cy.intercept("POST", "api/orders", {fixture: "order.json"}).as("postOrder");
+        cy.visit('/');
+        cy.wait('@getIngredients')
+
+        cy.get('.bun-list').first().as('bunList');
+        cy.get('.sauce-list').first().as('sauceList');
+        cy.get('.main-list').first().as('mainList');
+        cy.get('*[class^=burger-constructor_constructor]').first().as('constructor');
+        cy.get('@bunList').find('*[class^=burger-ingredient_ingredient]').first().as('bun')
+        cy.get('@sauceList').find('*[class^=burger-ingredient_ingredient]').first().as('sauce')
+        cy.get('[class^=burger-ingredient_ingredient]').first().as('ingredient');
+        cy.get('@mainList').find('*[class^=burger-ingredient_ingredient]').first().as('main')
+
 
         window.localStorage.setItem(
             "refreshToken",
@@ -14,30 +30,22 @@ describe('Burger constructor test', function() {
         );
     });
 
-    it('should be available on localhost:3000', function() {
-        cy.visit('http://localhost:3000');
+    it('should be available on localhost:3000', function () {
+        cy.get('*[class^=app_content]').first().should('exist')
     });
 
-    it('should be ingredient modal work', function() {
-        cy.intercept('https://norma.nomoreparties.space/api/ingredients').as('getIngredients')
-        cy.visit('http://localhost:3000');
-        cy.wait('@getIngredients')
-        cy.get('[class^=burger-ingredient_ingredient]').first().as('ingredient');
+    it('should be ingredient modal work', function () {
+
         cy.get('@ingredient').click()
         cy.get('[class^=modal]').as('modal')
         cy.get('@modal').should('be.visible')
-        cy.get('@modal').find('[class^=modal_closeModal]').first().as('closeButton');
-        cy.get('@closeButton').click()
+        cy.get('@modal').find('[class^=modal_closeModal]').first().as('closeModalButton');
+        cy.get('@closeModalButton').click()
         cy.get('@modal').should('not.exist')
     });
 
-    it('ingredient should be added to order', function() {
-        cy.intercept('https://norma.nomoreparties.space/api/ingredients').as('getIngredients')
-        cy.visit('http://localhost:3000');
-        cy.wait('@getIngredients')
-        cy.get('.bun-list').first().as('bunList');
-        cy.get('*[class^=burger-constructor_constructor]').first().as('constructor');
-        cy.get('@bunList').find('*[class^=burger-ingredient_ingredient]').first().as('bun')
+    it('ingredient should be added to order', function () {
+
 
         cy.get('@bun').trigger('dragstart');
         cy.get('@constructor').trigger('drop');
@@ -46,17 +54,8 @@ describe('Burger constructor test', function() {
         cy.get('.constructor-element_pos_bottom').should('exist')
     });
 
-    it('ingredient should be added to order', function() {
-        cy.intercept('https://norma.nomoreparties.space/api/ingredients').as('getIngredients')
-        cy.visit('http://localhost:3000');
-        cy.wait('@getIngredients')
-        cy.get('.bun-list').first().as('bunList');
-        cy.get('.sauce-list').first().as('sauceList');
-        cy.get('.main-list').first().as('mainList');
-        cy.get('*[class^=burger-constructor_constructor]').first().as('constructor');
-        cy.get('@bunList').find('*[class^=burger-ingredient_ingredient]').first().as('bun')
-        cy.get('@sauceList').find('*[class^=burger-ingredient_ingredient]').first().as('sauce')
-        cy.get('@mainList').find('*[class^=burger-ingredient_ingredient]').first().as('main')
+    it('ingredient should be added to order', function () {
+
 
         cy.get('@bun').trigger('dragstart');
         cy.get('@constructor').trigger('drop');

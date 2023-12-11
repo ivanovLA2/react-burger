@@ -1,15 +1,10 @@
-import {burgerConstructorReducer} from './burger-consrtuctor'
+import {burgerConstructorReducer, initialConstructorState} from './burger-consrtuctor'
 import {GET_ITEMS_FAILED, GET_ITEMS_REQUEST, GET_ITEMS_SUCCESS, SET_SELECTED_ITEM} from "../actions/burger-consrtuctor";
 
 describe('Burger constructor reducer', () => {
     it('should return the initial state', () => {
         expect(burgerConstructorReducer(undefined, {})).toEqual(
-            {
-                items: [],
-                itemsRequest: false,
-                itemsFailed: false,
-                selectedItem: null
-            }
+            initialConstructorState
         )
     })
 

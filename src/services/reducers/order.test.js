@@ -1,4 +1,4 @@
-import {orderReducer} from './order'
+import {initialOrderState, orderReducer} from './order'
 import {
   ADD_INGREDIENT,
   CHANGE_POSITION,
@@ -11,13 +11,7 @@ import {
 describe('Order reducer', () => {
   it('should return the initial state', () => {
     expect(orderReducer(undefined, {})).toEqual(
-        {
-          orderNumber: null,
-          orderRequest: false,
-          orderFailed: false,
-          orderItems: [],
-          bun: null
-        }
+        initialOrderState
     )
   })
 
