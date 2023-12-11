@@ -1,4 +1,4 @@
-Адрес приложения: http://130.193.42.72/
+Адрес приложения: https://ivanov-la2-burger.nomoredomainsmonster.ru/
 
 
 # Getting Started with Create React App
