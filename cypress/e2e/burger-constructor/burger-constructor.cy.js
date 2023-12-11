@@ -30,7 +30,7 @@ describe('Burger constructor test', function () {
         );
     });
 
-    it('should be available on localhost:3000', function () {
+    it('should be available', function () {
         cy.get('*[class^=app_content]').first().should('exist')
     });
 
