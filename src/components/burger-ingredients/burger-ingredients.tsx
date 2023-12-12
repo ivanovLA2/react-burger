@@ -72,7 +72,7 @@ function BurgerIngredients() {
           <p className="text text_type_main-medium" ref={bunRef}>
             Булки
           </p>
-          <div className={styles.ingredients}>
+          <div className={`${styles.ingredients} bun-list`}>
             {ingredients.filter(ingredient => ingredient.type === "bun")
                 .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing}
                                                 count={bun?._id === ing._id ? 1 : 0}
@@ -82,7 +82,7 @@ function BurgerIngredients() {
           <p className="text text_type_main-medium" ref={sauceRef}>
             Соусы
           </p>
-          <div className={styles.ingredients}>
+          <div className={`${styles.ingredients} sauce-list`}>
             {ingredients.filter(ingredient => ingredient.type === "sauce")
                 .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing}
                                                 count={orderItems.filter(value => value._id === ing._id).length}
@@ -92,7 +92,7 @@ function BurgerIngredients() {
           <p className="text text_type_main-medium" ref={mainRef}>
             Начинки
           </p>
-          <div className={styles.ingredients}>
+          <div className={`${styles.ingredients} main-list`}>
             {ingredients.filter(ingredient => ingredient.type === "main")
                 .map((ing) => <BurgerIngredient key={ing._id} ingredient={ing}
                                                 count={orderItems.filter(value => value._id === ing._id).length}

@@ -22,7 +22,7 @@ export default function OrderDetails(props: Props) {
 
         {orderNumber &&
             (<>
-              <p className="text text_type_digits-large">{orderNumber}</p>
+              <p className="text text_type_digits-large order-number">{orderNumber}</p>
               <p className="text text_type_main-default pt-8">
                 идентификатор заказа
               </p>

@@ -7,8 +7,8 @@ import ForgotPasswordRequest from "../utils/auth/forgot-password-request";
 import ResetPasswordRequest from "../utils/auth/reset-password-request";
 import UserUpdateRequest from "../utils/auth/user-update-request";
 
-const API_ROOT = 'https://norma.nomoreparties.space/api';
-const INGREDIENTS_API = '/ingredients'
+export const API_ROOT = 'https://norma.nomoreparties.space/api';
+export const INGREDIENTS_API = '/ingredients'
 const ORDER_INFO_API = '/orders/'
 const ORDERS_API = '/orders'
 const AUTH_LOGIN_API = '/auth/login'

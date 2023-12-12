@@ -8,7 +8,7 @@ import WsState from "../../utils/ws-state";
 import {ORDER_INFO_FAILED, ORDER_INFO_REQUEST, ORDER_INFO_SUCCESS} from "../actions/order-action-types";
 import {TWSActions} from "../types";
 
-const initialState: WsState = {
+export const initialState: WsState = {
   wsConnected: false,
   feed: null,
   order: null,

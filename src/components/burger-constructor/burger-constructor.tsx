@@ -110,7 +110,7 @@ function BurgerConstructor() {
           <p
               className="text text_type_digits-medium pr-1"> {orderItems.reduce((sum, i) => sum + i.price, bun.price * 2)}</p>
           <CurrencyIcon type="primary"/>
-          <Button htmlType="button" type="primary" size="medium" extraClass="ml-10 mr-4"
+          <Button htmlType="button" type="primary" size="medium" extraClass="ml-10 mr-4 order-button"
                   onClick={handleModalOpen}>
             Оформить заказ
           </Button>

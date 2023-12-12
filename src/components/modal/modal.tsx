@@ -62,7 +62,7 @@ export default function Modal(props: Props) {
                   </p>
                   <ClosedButton/>
                 </div>) : (
-                    <div className={` ${styles.closeButton} pt-15 pr-10`}>
+                    <div className={`${styles.closeButton} pt-15 pr-10`}>
                       <ClosedButton/>
                     </div>
                 )}
