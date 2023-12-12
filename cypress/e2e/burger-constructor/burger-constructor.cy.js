@@ -1,5 +1,7 @@
 import {API_ROOT, INGREDIENTS_API} from "../../../src/services/api";
 
+const INGREDIENT_SELECTOR = '*[class^=burger-ingredient_ingredient]';
+
 describe('Burger constructor test', function () {
 
     beforeEach(() => {
@@ -13,10 +15,10 @@ describe('Burger constructor test', function () {
         cy.get('.sauce-list').first().as('sauceList');
         cy.get('.main-list').first().as('mainList');
         cy.get('*[class^=burger-constructor_constructor]').first().as('constructor');
-        cy.get('@bunList').find('*[class^=burger-ingredient_ingredient]').first().as('bun')
-        cy.get('@sauceList').find('*[class^=burger-ingredient_ingredient]').first().as('sauce')
-        cy.get('[class^=burger-ingredient_ingredient]').first().as('ingredient');
-        cy.get('@mainList').find('*[class^=burger-ingredient_ingredient]').first().as('main')
+        cy.get(INGREDIENT_SELECTOR).first().as('ingredient');
+        cy.get('@bunList').find(INGREDIENT_SELECTOR).first().as('bun')
+        cy.get('@sauceList').find(INGREDIENT_SELECTOR).first().as('sauce')
+        cy.get('@mainList').find(INGREDIENT_SELECTOR).first().as('main')
 
 
         window.localStorage.setItem(
